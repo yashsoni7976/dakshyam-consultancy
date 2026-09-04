@@ -6,7 +6,19 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "test:staged": "node scripts/test-staged.mjs",
+    "precommit": "lint-staged && npm run test:staged && npm run build",
+    "validate": "npm run format:check && npm run test:coverage && npm run build",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx,mjs,cjs,json,css,md}": "prettier --write"
   },
   "dependencies": {
     "lucide-react": "^1.38.0",
