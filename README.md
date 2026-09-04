@@ -1,36 +1,54 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Dakshyam Consulting
 
-## Getting Started
+Website for Dakshyam Consulting — subsidy and project-finance consultancy for
+MSMEs and startups in Rajasthan.
 
-First, run the development server:
+Next.js 16 (App Router, Cache Components) · React 19 · Tailwind CSS 4 · TypeScript.
+
+## Getting started
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev     # http://localhost:3000
+npm run build   # production build
+npm run lint
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## How this project is organised
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+All content is centralised. Pages render; they never own copy or data.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+content/data/          Content as typed TypeScript — the current source of truth
+lib/content/types.ts   The content model (also the future CMS schema)
+lib/content/repository.ts  The only API pages use. Caching + invalidation tags
+lib/content/providers/     Swappable content source. Backend migration point
+lib/seo.ts             Metadata + schema.org, built from site identity
+app/                   Routes. Layout and presentation only
+docs/                  Architecture plan and source audit
+public/documents/      Government scheme guideline PDFs
+```
 
-## Learn More
+**[`DESIGN.md`](DESIGN.md)** is the visual specification — the warm cream
+editorial system, with a Bikaner sandstone accent used as punctuation. It is implemented as a Tailwind v4 `@theme` block
+in `app/globals.css`; the "Design tokens" section of the architecture doc
+explains how the two line up.
 
-To learn more about Next.js, take a look at the following resources:
+Read **[`docs/CONTENT-ARCHITECTURE.md`](docs/CONTENT-ARCHITECTURE.md)** before
+adding content or wiring a backend. It explains the three-layer split, the
+caching strategy, and the phased migration to a CMS.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+**[`docs/source-audit/`](docs/source-audit/README.md)** is the reference audit
+of rajasthansubsidy.com — the full page inventory, extracted content, and the
+boundaries on what may be reused.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Before launch
 
-## Deploy on Vercel
+Business-identity values are placeholders. Find them with:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+grep -rn "TODO(brand)\|TODO(legal)" content/ lib/
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+`TODO(brand)` needs Dakshyam Consulting's real details and verifiable figures.
+`TODO(legal)` needs review by a qualified advocate.

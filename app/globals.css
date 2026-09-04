@@ -1,26 +1,285 @@
 @import "tailwindcss";
 
+/* ---------------------------------------------------------------------------
+   Design tokens — warm cream editorial
+   ---------------------------------------------------------------------------
+   Source of truth: DESIGN.md.
+
+   An eggshell paper canvas holding black ink, with one layer of warm taupe
+   surfaces and stone hairlines. The palette is deliberately ~97% achromatic:
+   the two sparks (violet, ember) are decoration only and never appear on a
+   button, a link, a badge or any other interactive chrome.
+
+   Light is the whole system. There is no dark variant — the warmth of the
+   canvas is the brand, and inverting it loses it.
+--------------------------------------------------------------------------- */
+
+@theme {
+  /* Surfaces and ink */
+  --color-eggshell: #fdfcfc;
+  --color-taupe: #f5f3f1;
+  --color-stone: #ebe8e4;
+  --color-hairline: #e5e5e5;
+
+  /* Text */
+  --color-ink: #000000;
+  --color-graphite: #44403b;
+  --color-smoke: #777169;
+
+  /* Ash reaches only 2.6:1 on the canvas — decorative icons, placeholders
+     and disabled affordances only, never a run of copy. */
+  --color-ash: #a59f97;
+
+  /* Sandstone — the interactive accent, the weathered Dulmera red of Bikaner.
+     `deep` is the default step and the only one that clears 4.5:1 at body
+     sizes; the mid step is 4.1:1 and is for icons, rules and display text.
+     Punctuation only: see the Colour Budget in DESIGN.md. */
+  --color-sandstone-wash: #faf1ec;
+  --color-sandstone-line: #ebd9d0;
+  --color-sandstone: #b9663f;
+  --color-sandstone-deep: #a34a34;
+
+  /* Product-visual sparks — artwork only, never UI chrome */
+  --color-violet: #0447ff;
+  --color-ember: #ff4704;
+
+  /* The single inverted surface, for the closing CTA panel. Reads as black
+     while holding the warmth of the canvas. Text and buttons stay pure ink. */
+  --color-ink-warm: #1a0f0b;
+
+  /* Functional validation state. A darkened ember rather than a new hue:
+     #ff4704 itself only reaches 3.4:1 on the eggshell canvas, which is not
+     enough for error text. Used for form validation and nothing else. */
+  --color-alert: #b3300a;
+
+  /* Type families. Waldenburg is substituted by Inter 300 per DESIGN.md. */
+  --font-display: var(--font-inter), ui-sans-serif, system-ui, -apple-system,
+    "Segoe UI", Roboto, sans-serif;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system,
+    "Segoe UI", Roboto, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo,
+    monospace;
+
+  /* Type scale. Display sizes carry their own weight-300 and tight tracking so
+     a single utility can never be applied at the wrong weight. Body sizes take
+     the opposite tracking direction — that contrast is deliberate. */
+  --text-caption: 10px;
+  --text-caption--line-height: 1.6;
+
+  --text-micro: 12px;
+  --text-micro--line-height: 1.5;
+
+  --text-body-sm: 14px;
+  --text-body-sm--line-height: 1.5;
+  --text-body-sm--letter-spacing: 0.01em;
+
+  --text-body: 16px;
+  --text-body--line-height: 1.5;
+  --text-body--letter-spacing: 0.01em;
+
+  --text-subheading: 18px;
+  --text-subheading--line-height: 1.6;
+
+  --text-body-lg: 20px;
+  --text-body-lg--line-height: 1.35;
+
+  --text-heading-xs: 24px;
+  --text-heading-xs--line-height: 1.2;
+  --text-heading-xs--letter-spacing: -0.02em;
+  --text-heading-xs--font-weight: 300;
+
+  --text-heading-sm: 32px;
+  --text-heading-sm--line-height: 1.13;
+  --text-heading-sm--letter-spacing: -0.02em;
+  --text-heading-sm--font-weight: 300;
+
+  --text-heading: 36px;
+  --text-heading--line-height: 1.17;
+  --text-heading--letter-spacing: -0.02em;
+  --text-heading--font-weight: 300;
+
+  --text-display: 48px;
+  --text-display--line-height: 1.08;
+  --text-display--letter-spacing: -0.02em;
+  --text-display--font-weight: 300;
+
+  /* Radii. Pills and 20/24px cards are the system's signature shapes; 4px on
+     inputs is the one place the pill is dropped. */
+  --radius-input: 4px;
+  --radius-plate: 10px;
+  --radius-card: 20px;
+  --radius-card-lg: 24px;
+
+  /* Elevation — near-invisible by design. Prefer a hairline border. */
+  --shadow-whisper: rgba(0, 0, 0, 0.4) 0px 0px 1px 0px,
+    rgba(0, 0, 0, 0.04) 0px 1px 1px 0px, rgba(0, 0, 0, 0.04) 0px 2px 4px 0px;
+  --shadow-inset-hairline: rgb(235, 232, 228) 0px 0px 0px 0.5px inset;
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  color-scheme: light;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+  }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  body {
+    background: var(--color-eggshell);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: 16px;
+    font-weight: 400;
+  }
+
+  /* Display type is whisper-weight everywhere; never bolded. */
+  h1,
+  h2,
+  h3 {
+    font-weight: 300;
+    text-wrap: balance;
+  }
+
+  /* The spec names sandstone-wash for selection, but #faf1ec against a
+     #fdfcfc canvas is a 1% difference and reads as no selection at all.
+     Stepping up to the line tone keeps it on-palette and actually visible. */
+  ::selection {
+    background: var(--color-sandstone-line);
+    color: var(--color-ink);
+  }
+
+  :focus-visible {
+    outline: 1.5px solid var(--color-sandstone-deep);
+    outline-offset: 2px;
+    border-radius: 2px;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* ---------------------------------------------------------------------------
+   Utilities
+--------------------------------------------------------------------------- */
+
+/* The single centred column every section sits inside: 1280px with generous
+   outer gutters that step up to the 64px the design calls for on wide screens. */
+@utility container-page {
+  margin-inline: auto;
+  width: 100%;
+  max-width: 80rem;
+  padding-inline: 1.5rem;
+
+  @media (width >= 40rem) {
+    padding-inline: 2.5rem;
+  }
+
+  @media (width >= 64rem) {
+    padding-inline: 4rem;
+  }
+}
+
+/* Editorial section rhythm — 96px, opening out to 120px on wide screens. */
+@utility section-y {
+  padding-block: 4.5rem;
+
+  @media (width >= 40rem) {
+    padding-block: 6rem;
+  }
+
+  @media (width >= 64rem) {
+    padding-block: 7.5rem;
+  }
+}
+
+/* Display type: Inter 300 standing in for Waldenburg. */
+@utility display-type {
+  font-family: var(--font-display);
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  font-feature-settings: "ss01" on;
+}
+
+/* Technical micro-copy — used sparingly for labels and metadata. */
+@utility label-mono {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.69;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-smoke);
+}
+
+/* Long-form legal and editorial copy. */
+@utility prose-doc {
+  max-width: 68ch;
+  color: var(--color-smoke);
+
+  & p {
+    margin-block: 1rem;
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--color-smoke);
+  }
+
+  & h2 {
+    margin-block: 2.5rem 0.75rem;
+    font-family: var(--font-display);
+    font-size: 24px;
+    font-weight: 300;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    color: var(--color-ink);
+  }
+
+  & h3 {
+    margin-block: 1.75rem 0.5rem;
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 1.4;
+    color: var(--color-ink);
+  }
+
+  & ul {
+    margin-block: 1rem;
+    padding-inline-start: 1.1rem;
+    list-style: disc;
+  }
+
+  & li {
+    margin-block: 0.4rem;
+    line-height: 1.6;
+    color: var(--color-smoke);
+    &::marker {
+      color: var(--color-ash);
+    }
+  }
+
+  & strong {
+    font-weight: 500;
+    color: var(--color-ink);
+  }
+
+  & a {
+    color: var(--color-sandstone-deep);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+    text-decoration-color: var(--color-sandstone-line);
+  }
+
+  & a:hover {
+    text-decoration-color: var(--color-sandstone-deep);
+  }
 }

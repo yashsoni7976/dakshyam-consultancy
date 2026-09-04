@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48" role="img" aria-label="Dakshyam Consulting">
+  <!-- PLACEHOLDER monogram. Replace with the real Dakshyam Consulting logo.
+       Ink plate with an eggshell letterform, plus one spark dot — the only
+       place colour is permitted outside a product visual. -->
+  <defs>
+    <radialGradient id="dc-spark" cx="35%" cy="30%" r="80%">
+      <stop offset="0%" stop-color="#ff8a5c"/>
+      <stop offset="55%" stop-color="#ff4704"/>
+      <stop offset="100%" stop-color="#0447ff"/>
+    </radialGradient>
+  </defs>
+  <rect width="48" height="48" rx="10" fill="#000000"/>
+  <path d="M14 13h9.6c7 0 11.9 4.5 11.9 11s-4.9 11-11.9 11H14V13Zm6.3 5.5v11h3c3.4 0 5.6-2.2 5.6-5.5s-2.2-5.5-5.6-5.5h-3Z" fill="#fdfcfc"/>
+  <circle cx="35.5" cy="15" r="3.2" fill="url(#dc-spark)"/>
+</svg>

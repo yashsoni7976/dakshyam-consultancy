@@ -1,0 +1,796 @@
+<title>Dakshyam Content Architecture</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+
+<style>
+  /* ---------- tokens: light (bare :root = complete palette) ---------- */
+  :root {
+    --ground:      #f4f6f8;
+    --surface:     #ffffff;
+    --surface-alt: #eef1f5;
+    --ink:         #1b2230;
+    --ink-soft:    #3d4757;
+    --muted:       #5f6a7d;
+    --hairline:    #dde2ea;
+    --hairline-hi: #c8d0dc;
+    --indigo:      #2f4a8a;
+    --indigo-soft: #e6ecf8;
+    --brass:       #8a6b34;
+    --ok:          #23684f;
+    --ok-bg:       #dff0e7;
+    --pending:     #85601a;
+    --pending-bg:  #f7ecd4;
+    --blocked:     #8c3345;
+    --blocked-bg:  #f7dee3;
+    --shadow:      0 1px 2px rgba(27,34,48,.06), 0 8px 24px -16px rgba(27,34,48,.28);
+
+    --measure: 68ch;
+    --step--1: clamp(.78rem, .76rem + .1vw, .84rem);
+    --step-0:  clamp(.97rem, .94rem + .14vw, 1.05rem);
+    --step-1:  clamp(1.18rem, 1.1rem + .32vw, 1.35rem);
+    --step-2:  clamp(1.5rem, 1.35rem + .6vw, 1.9rem);
+    --step-3:  clamp(2rem, 1.7rem + 1.3vw, 2.9rem);
+
+    color-scheme: light;
+  }
+
+  /* ---------- tokens: dark via system, unless light is pinned ---------- */
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground:      #111623;
+      --surface:     #182031;
+      --surface-alt: #1e273a;
+      --ink:         #e3e8f1;
+      --ink-soft:    #c3ccdb;
+      --muted:       #8d99ad;
+      --hairline:    #2a3346;
+      --hairline-hi: #3b465c;
+      --indigo:      #91addf;
+      --indigo-soft: #1d2941;
+      --brass:       #c6a45f;
+      --ok:          #63bd98;
+      --ok-bg:       #16342a;
+      --pending:     #d8aa4e;
+      --pending-bg:  #392c12;
+      --blocked:     #e0808f;
+      --blocked-bg:  #3a1c23;
+      --shadow:      0 1px 2px rgba(0,0,0,.4), 0 10px 30px -18px rgba(0,0,0,.8);
+      color-scheme: dark;
+    }
+  }
+
+  /* ---------- tokens: dark pinned explicitly ---------- */
+  :root[data-theme="dark"] {
+    --ground:      #111623;
+    --surface:     #182031;
+    --surface-alt: #1e273a;
+    --ink:         #e3e8f1;
+    --ink-soft:    #c3ccdb;
+    --muted:       #8d99ad;
+    --hairline:    #2a3346;
+    --hairline-hi: #3b465c;
+    --indigo:      #91addf;
+    --indigo-soft: #1d2941;
+    --brass:       #c6a45f;
+    --ok:          #63bd98;
+    --ok-bg:       #16342a;
+    --pending:     #d8aa4e;
+    --pending-bg:  #392c12;
+    --blocked:     #e0808f;
+    --blocked-bg:  #3a1c23;
+    --shadow:      0 1px 2px rgba(0,0,0,.4), 0 10px 30px -18px rgba(0,0,0,.8);
+    color-scheme: dark;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+
+  body {
+    background: var(--ground);
+    color: var(--ink);
+    font-family: "IBM Plex Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+    font-size: var(--step-0);
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .page {
+    max-width: 1080px;
+    margin-inline: auto;
+    padding: clamp(1.5rem, 1rem + 3vw, 4rem) clamp(1.1rem, .6rem + 2.4vw, 2.5rem) 6rem;
+    display: flex;
+    flex-direction: column;
+    gap: clamp(3rem, 2rem + 3vw, 4.75rem);
+  }
+
+  .prose { max-width: var(--measure); }
+
+  h1, h2, h3 {
+    font-family: Newsreader, ui-serif, Georgia, "Times New Roman", serif;
+    font-weight: 500;
+    text-wrap: balance;
+    letter-spacing: -.012em;
+    margin: 0;
+  }
+
+  a { color: var(--indigo); text-underline-offset: .18em; text-decoration-thickness: .06em; }
+  a:focus-visible, summary:focus-visible {
+    outline: 2px solid var(--indigo);
+    outline-offset: 3px;
+    border-radius: 3px;
+  }
+
+  code, .mono {
+    font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: .88em;
+  }
+  code {
+    background: var(--surface-alt);
+    border: 1px solid var(--hairline);
+    border-radius: 4px;
+    padding: .08em .34em;
+    color: var(--ink-soft);
+    white-space: nowrap;
+  }
+
+  /* ---------------- masthead ---------------- */
+  .masthead {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    padding-bottom: 2.25rem;
+    border-bottom: 2px solid var(--ink);
+  }
+  .stamp {
+    display: inline-flex;
+    align-items: center;
+    gap: .6rem;
+    align-self: flex-start;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: .68rem;
+    font-weight: 500;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    color: var(--indigo);
+    border: 1px solid var(--indigo);
+    border-radius: 2px;
+    padding: .34rem .7rem;
+  }
+  .stamp::before {
+    content: "";
+    width: 6px; height: 6px;
+    background: var(--indigo);
+    border-radius: 50%;
+  }
+  h1 { font-size: var(--step-3); line-height: 1.08; }
+  h1 em {
+    font-style: italic;
+    color: var(--brass);
+  }
+  .standfirst {
+    max-width: var(--measure);
+    font-size: var(--step-1);
+    line-height: 1.5;
+    color: var(--ink-soft);
+    margin: 0;
+  }
+  .byline {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5rem 1.5rem;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: var(--step--1);
+    color: var(--muted);
+  }
+  .byline b { color: var(--ink-soft); font-weight: 500; }
+
+  /* ---------------- key figures ---------------- */
+  .figures {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 1px;
+    background: var(--hairline);
+    border: 1px solid var(--hairline);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  .figure {
+    background: var(--surface);
+    padding: 1.1rem 1.15rem 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: .15rem;
+  }
+  .figure .n {
+    font-family: Newsreader, serif;
+    font-size: clamp(1.7rem, 1.4rem + 1.1vw, 2.3rem);
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+    color: var(--ink);
+  }
+  .figure .n small { font-size: .5em; color: var(--muted); margin-left: .1em; }
+  .figure .l {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: .66rem;
+    letter-spacing: .11em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  /* ---------------- sections ---------------- */
+  section { display: flex; flex-direction: column; gap: 1.4rem; }
+  .sec-head { display: flex; flex-direction: column; gap: .45rem; }
+  .eyebrow {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: .68rem;
+    font-weight: 500;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    color: var(--brass);
+  }
+  h2 { font-size: var(--step-2); line-height: 1.15; }
+  h3 { font-size: var(--step-1); line-height: 1.3; }
+  section > p, .prose p { margin: 0; }
+  .prose > * + * { margin-top: .9rem; }
+
+  /* ---------------- tables ---------------- */
+  .table-wrap {
+    overflow-x: auto;
+    border: 1px solid var(--hairline);
+    border-radius: 6px;
+    background: var(--surface);
+    box-shadow: var(--shadow);
+  }
+  table { border-collapse: collapse; width: 100%; font-size: var(--step--1); }
+  caption {
+    caption-side: bottom;
+    text-align: left;
+    padding: .7rem .95rem .8rem;
+    color: var(--muted);
+    font-size: var(--step--1);
+    border-top: 1px solid var(--hairline);
+  }
+  th, td {
+    text-align: left;
+    padding: .58rem .8rem;
+    border-bottom: 1px solid var(--hairline);
+    vertical-align: top;
+  }
+  thead th {
+    background: var(--surface-alt);
+    font-family: "IBM Plex Mono", monospace;
+    font-size: .66rem;
+    font-weight: 600;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    white-space: nowrap;
+    border-bottom: 1px solid var(--hairline-hi);
+  }
+  tbody tr:last-child td { border-bottom: none; }
+  td.num {
+    font-family: "IBM Plex Mono", monospace;
+    font-variant-numeric: tabular-nums;
+    color: var(--muted);
+    width: 1%;
+  }
+  td.route { white-space: nowrap; }
+  td.route code { background: none; border: none; padding: 0; color: var(--indigo); font-weight: 500; }
+
+  /* ---------------- chips ---------------- */
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: .32rem;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: .64rem;
+    font-weight: 500;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    padding: .16rem .46rem;
+    border-radius: 3px;
+    white-space: nowrap;
+  }
+  .chip::before { content: ""; width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
+  .chip.ok      { color: var(--ok);      background: var(--ok-bg); }
+  .chip.pending { color: var(--pending); background: var(--pending-bg); }
+  .chip.blocked { color: var(--blocked); background: var(--blocked-bg); }
+  .chip.info    { color: var(--indigo);  background: var(--indigo-soft); }
+
+  /* ---------------- architecture stack ---------------- */
+  .stack { display: flex; flex-direction: column; gap: 0; }
+  .layer {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: .5rem;
+    background: var(--surface);
+    border: 1px solid var(--hairline);
+    padding: 1.05rem 1.2rem;
+    box-shadow: var(--shadow);
+  }
+  .layer:first-child { border-radius: 6px 6px 0 0; }
+  .layer:last-child  { border-radius: 0 0 6px 6px; }
+  .layer + .layer { border-top: none; }
+  .layer.pivot { border-left: 3px solid var(--brass); }
+  .layer-top { display: flex; flex-wrap: wrap; align-items: baseline; gap: .5rem .8rem; }
+  .layer-name {
+    font-family: Newsreader, serif;
+    font-size: var(--step-1);
+    color: var(--ink);
+  }
+  .layer-path {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: var(--step--1);
+    color: var(--indigo);
+  }
+  .layer p { margin: 0; color: var(--muted); font-size: var(--step--1); max-width: 62ch; }
+  .flow {
+    display: flex;
+    align-items: center;
+    gap: .55rem;
+    padding: .35rem 0 .35rem 1.25rem;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: .68rem;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .flow::before {
+    content: "";
+    width: 1px; height: 18px;
+    background: var(--hairline-hi);
+  }
+
+  /* ---------------- buckets ---------------- */
+  .buckets { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(255px, 1fr)); }
+  .bucket {
+    background: var(--surface);
+    border: 1px solid var(--hairline);
+    border-radius: 6px;
+    padding: 1.1rem 1.2rem 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: .6rem;
+    box-shadow: var(--shadow);
+  }
+  .bucket h3 { font-size: 1.08rem; }
+  .bucket p { margin: 0; font-size: var(--step--1); color: var(--muted); }
+  .bucket ul { margin: 0; padding-left: 1.05rem; font-size: var(--step--1); color: var(--ink-soft); }
+  .bucket li + li { margin-top: .2rem; }
+
+  /* ---------------- phases ---------------- */
+  ol.phases { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0; counter-reset: phase; }
+  ol.phases > li {
+    counter-increment: phase;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 0 1.1rem;
+    padding: 0 0 1.5rem;
+    position: relative;
+  }
+  ol.phases > li:last-child { padding-bottom: 0; }
+  ol.phases > li::before {
+    content: counter(phase);
+    grid-row: 1 / -1;
+    width: 2rem; height: 2rem;
+    display: grid; place-items: center;
+    border: 1px solid var(--hairline-hi);
+    border-radius: 50%;
+    background: var(--surface);
+    font-family: "IBM Plex Mono", monospace;
+    font-size: .8rem;
+    font-variant-numeric: tabular-nums;
+    color: var(--indigo);
+    z-index: 1;
+  }
+  ol.phases > li:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    left: 1rem; top: 2rem; bottom: 0;
+    width: 1px;
+    background: var(--hairline);
+  }
+  .phase-title {
+    font-family: Newsreader, serif;
+    font-size: var(--step-1);
+    line-height: 2rem;
+  }
+  ol.phases p { margin: .3rem 0 0; color: var(--muted); font-size: var(--step--1); max-width: 62ch; }
+
+  /* ---------------- callout ---------------- */
+  .callout {
+    background: var(--surface);
+    border: 1px solid var(--hairline);
+    border-left: 3px solid var(--indigo);
+    border-radius: 4px;
+    padding: 1.05rem 1.2rem;
+    display: flex;
+    flex-direction: column;
+    gap: .55rem;
+  }
+  .callout p { margin: 0; max-width: 66ch; }
+  .callout .label {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: .66rem;
+    letter-spacing: .13em;
+    text-transform: uppercase;
+    color: var(--indigo);
+  }
+
+  .pull {
+    font-family: Newsreader, serif;
+    font-size: var(--step-2);
+    line-height: 1.3;
+    color: var(--ink);
+    margin: 0;
+    max-width: 24ch;
+    text-wrap: balance;
+  }
+  .pull span { color: var(--brass); font-style: italic; }
+
+  /* ---------------- next steps ---------------- */
+  .checklist { list-style: none; margin: 0; padding: 0; display: grid; gap: .1rem; }
+  .checklist li {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: .7rem;
+    align-items: baseline;
+    padding: .55rem 0;
+    border-bottom: 1px solid var(--hairline);
+    font-size: var(--step--1);
+  }
+  .checklist li:last-child { border-bottom: none; }
+  .checklist .mark {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: .72rem;
+    color: var(--muted);
+  }
+  .checklist .done .mark { color: var(--ok); }
+  .checklist .done span:last-child { color: var(--muted); }
+
+  footer.colophon {
+    border-top: 1px solid var(--hairline);
+    padding-top: 1.4rem;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: var(--step--1);
+    color: var(--muted);
+    display: flex;
+    flex-direction: column;
+    gap: .4rem;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    a { transition: color .15s ease; }
+  }
+</style>
+
+<div class="page">
+
+  <header class="masthead">
+    <span class="stamp">Audit &amp; architecture</span>
+    <h1>Rebuilding a subsidy portal on a <em>content spine</em></h1>
+    <p class="standfirst">
+      A full capture of rajasthansubsidy.com, rebased as Dakshyam Consulting — and the
+      content architecture that lets a backend arrive later without rewriting a single page.
+    </p>
+    <div class="byline">
+      <span>Captured <b>31 Aug 2026</b></span>
+      <span>Source <b>rajasthansubsidy.com</b></span>
+      <span>Target <b>Next.js 16 · App Router</b></span>
+      <span>Routes built <b>17 / 17</b></span>
+    </div>
+  </header>
+
+  <section>
+    <div class="figures">
+      <div class="figure"><span class="n">17</span><span class="l">Routes found</span></div>
+      <div class="figure"><span class="n">14</span><span class="l">Pages captured</span></div>
+      <div class="figure"><span class="n">11</span><span class="l">Schemes modelled</span></div>
+      <div class="figure"><span class="n">12</span><span class="l">Services modelled</span></div>
+      <div class="figure"><span class="n">24<small>MB</small></span><span class="l">Guideline PDFs</span></div>
+      <div class="figure"><span class="n">17</span><span class="l">Routes shipped</span></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <span class="eyebrow">How it was captured</span>
+      <h2>The source ships no HTML</h2>
+    </div>
+    <div class="prose">
+      <p>
+        rajasthansubsidy.com is a client-rendered Vite&nbsp;+&nbsp;React single-page app:
+        the server returns an empty <code>&lt;div id="root"&gt;</code> and a 1.88&nbsp;MB
+        JavaScript bundle. Fetching the URLs directly yields nothing but a shell, and there
+        is no sourcemap — <code>/assets/index-*.js.map</code> returns the SPA's own
+        <code>index.html</code> fallback rather than a map.
+      </p>
+      <p>
+        So the pages were rendered in headless Chrome with a 20-second virtual time budget
+        and the resulting DOM converted to structured text. The route list came from the
+        bundle's router table, which turned out to declare <strong>seven more routes than
+        <code>sitemap.xml</code> does</strong> — the four legal pages plus the admin area.
+      </p>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <span class="eyebrow">Inventory</span>
+      <h2>Every route on the source site</h2>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th><th>Route</th><th>Page</th><th>Sitemap</th><th>Content source</th><th>Capture</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="num">1</td><td class="route"><code>/</code></td><td>Home</td><td>Listed</td><td>Static</td><td><span class="chip ok">Captured</span></td></tr>
+          <tr><td class="num">2</td><td class="route"><code>/about</code></td><td>About Us</td><td>Listed</td><td>Static</td><td><span class="chip ok">Captured</span></td></tr>
+          <tr><td class="num">3</td><td class="route"><code>/services</code></td><td>Services</td><td>Listed</td><td>Static</td><td><span class="chip ok">Captured</span></td></tr>
+          <tr><td class="num">4</td><td class="route"><code>/schemes</code></td><td>Scheme Explorer</td><td>Listed</td><td>Static</td><td><span class="chip ok">Captured</span></td></tr>
+          <tr><td class="num">5</td><td class="route"><code>/success-stories</code></td><td>Success Stories</td><td>Listed</td><td>Static</td><td><span class="chip ok">Captured</span></td></tr>
+          <tr><td class="num">6</td><td class="route"><code>/work-showcase</code></td><td>Work Showcase</td><td>Listed</td><td>Firestore</td><td><span class="chip pending">Empty table</span></td></tr>
+          <tr><td class="num">7</td><td class="route"><code>/blog</code></td><td>Blog index</td><td>Listed</td><td>Firestore</td><td><span class="chip pending">No posts</span></td></tr>
+          <tr><td class="num">8</td><td class="route"><code>/blog/:slug</code></td><td>Blog post</td><td>1 URL</td><td>Firestore</td><td><span class="chip pending">Renders empty</span></td></tr>
+          <tr><td class="num">9</td><td class="route"><code>/contact</code></td><td>Contact</td><td>Listed</td><td>Static + form</td><td><span class="chip ok">Captured</span></td></tr>
+          <tr><td class="num">10</td><td class="route"><code>/sitemap</code></td><td>HTML sitemap</td><td>Listed</td><td>Static</td><td><span class="chip ok">Captured</span></td></tr>
+          <tr><td class="num">11</td><td class="route"><code>/terms</code></td><td>Terms &amp; Conditions</td><td>Absent</td><td>Static</td><td><span class="chip ok">Captured</span></td></tr>
+          <tr><td class="num">12</td><td class="route"><code>/privacy</code></td><td>Privacy Policy</td><td>Absent</td><td>Static</td><td><span class="chip ok">Captured</span></td></tr>
+          <tr><td class="num">13</td><td class="route"><code>/refund</code></td><td>Refund Policy</td><td>Absent</td><td>Static</td><td><span class="chip ok">Captured</span></td></tr>
+          <tr><td class="num">14</td><td class="route"><code>/legal</code></td><td>Legal Disclaimer</td><td>Absent</td><td>Static</td><td><span class="chip ok">Captured</span></td></tr>
+          <tr><td class="num">15</td><td class="route"><code>/login</code></td><td>Admin login</td><td>Absent</td><td>Firebase Auth</td><td><span class="chip blocked">Auth-gated</span></td></tr>
+          <tr><td class="num">16</td><td class="route"><code>/admin</code></td><td>Admin console</td><td>Absent</td><td>Firebase Auth</td><td><span class="chip blocked">Auth-gated</span></td></tr>
+          <tr><td class="num">17</td><td class="route"><code>*</code></td><td>404</td><td>—</td><td>Static</td><td><span class="chip info">N/A</span></td></tr>
+        </tbody>
+        <caption>Full text of all 14 captured pages is archived in <code>docs/source-audit/pages/</code>.</caption>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <span class="eyebrow">Findings</span>
+      <h2>What the capture told us</h2>
+    </div>
+    <div class="prose">
+      <p>
+        <strong>The source already runs a backend.</strong> Firebase Auth and Firestore drive
+        the blog, the blog posts and the Work Showcase records table, all administered through
+        <code>/admin</code>. All three render empty in production today — the showcase table
+        literally reads <em>"Records will appear once added by Admin."</em> That is the clearest
+        possible signal about which collections need a CMS on day one, and which are fine as code.
+      </p>
+      <p>
+        <strong>Nothing is server-rendered.</strong> Every page ships the same empty shell and
+        hydrates client-side; titles are patched in after hydration, leaving two
+        <code>&lt;title&gt;</code> tags in the DOM. For a site whose entire audience arrives by
+        searching for a scheme name, that is the single largest thing to fix — which is why the
+        rebuild prerenders everything.
+      </p>
+      <p>
+        <strong>1.88&nbsp;MB of JavaScript on first load</strong>, including jsPDF, a PDF viewer
+        and a Google API client, shipped to every visitor. And the four legal pages are linked
+        from the footer but missing from <code>sitemap.xml</code>.
+      </p>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <span class="eyebrow">Reuse boundaries</span>
+      <h2>Three buckets, enforced in the data</h2>
+    </div>
+    <p class="prose">
+      Not all scraped content can simply be rebranded. The split below is not advisory — it is
+      how <code>content/data/</code> is actually organised.
+    </p>
+    <div class="buckets">
+      <div class="bucket">
+        <span class="chip ok">Reused in full</span>
+        <h3>Public policy fact</h3>
+        <p>Scheme names, subsidy percentages, eligibility criteria, guideline PDFs.</p>
+        <ul>
+          <li>Sourced from government publications</li>
+          <li>Verified against the linked PDFs</li>
+          <li>Lives in <span class="mono">schemes.ts</span></li>
+        </ul>
+      </div>
+      <div class="bucket">
+        <span class="chip info">Rewritten</span>
+        <h3>Generic category copy</h3>
+        <p>Service names, section headings, structural framing.</p>
+        <ul>
+          <li>Structure retained, wording ours</li>
+          <li>No distinctive phrasing carried over</li>
+          <li>Lives in <span class="mono">services.ts</span>, <span class="mono">home.ts</span></li>
+        </ul>
+      </div>
+      <div class="bucket">
+        <span class="chip blocked">Not copied</span>
+        <h3>Another firm's identity</h3>
+        <p>Team, contact details, "700+ units served", "₹50+ Cr secured", the 4.9 rating, named client outcomes.</p>
+        <ul>
+          <li>Fields exist, values are <span class="mono">TODO(brand)</span></li>
+          <li>25 placeholders await real figures</li>
+          <li>Client names also carry a consent duty</li>
+        </ul>
+      </div>
+    </div>
+    <div class="callout">
+      <span class="label">Why this matters</span>
+      <p>
+        Those statistics are factual assertions about a specific firm's track record, and the
+        success stories name real businesses alongside real disbursement amounts. Republishing
+        them under Dakshyam Consulting would misrepresent the business and reuse those clients
+        as references without their consent. Every one of those fields is modelled and waiting —
+        it just needs Dakshyam's own verifiable numbers.
+      </p>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <span class="eyebrow">Architecture</span>
+      <h2>Pages render. They never own content.</h2>
+    </div>
+    <p class="prose">
+      Every string, figure, image reference and document link comes from one place. No page
+      imports from <code>content/data/</code>, and no copy is hard-coded in JSX. Three layers,
+      each with exactly one job:
+    </p>
+    <div class="stack">
+      <div class="layer">
+        <div class="layer-top">
+          <span class="layer-name">Presentation</span>
+          <span class="layer-path">app/**/page.tsx</span>
+        </div>
+        <p>Layout and markup only. Reads from the repository, knows nothing about where content lives.</p>
+      </div>
+      <div class="flow">imports</div>
+      <div class="layer">
+        <div class="layer-top">
+          <span class="layer-name">Access</span>
+          <span class="layer-path">lib/content/repository.ts</span>
+        </div>
+        <p>The only public API. Each function declares a <code>use cache</code> scope with an invalidation tag and a freshness budget.</p>
+      </div>
+      <div class="flow">delegates to</div>
+      <div class="layer pivot">
+        <div class="layer-top">
+          <span class="layer-name">Source</span>
+          <span class="layer-path">lib/content/providers/</span>
+          <span class="chip info">Migration point</span>
+        </div>
+        <p><span class="mono">static-provider.ts</span> reads typed TypeScript today. An <span class="mono">api-provider.ts</span> will read a CMS tomorrow. Both satisfy the same <code>ContentProvider</code> interface.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <span class="eyebrow">The key decision</span>
+      <h2>Async from day one</h2>
+    </div>
+    <div class="prose">
+      <p class="pull">Every provider method returns a <span>Promise</span> — even reading a local array.</p>
+      <p>
+        That looks like overhead while the data sits in memory. It is the thing that makes the
+        migration cheap. If the static layer were synchronous, introducing a backend would turn
+        every call site async — a refactor touching every page, landing in the same change that
+        introduces network failures and loading states. Keeping the signature async now means
+        the cutover really is a one-line change.
+      </p>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Collection</th><th>Cache profile</th><th>Reasoning</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Site identity, navigation</td><td><span class="mono">days</span></td><td>Changes at rebrand cadence</td></tr>
+          <tr><td>Schemes, services, home, team</td><td><span class="mono">days</span></td><td>Changes when a policy is notified</td></tr>
+          <tr><td>Success stories, blog</td><td><span class="mono">hours</span></td><td>Editorial — should appear same-day</td></tr>
+          <tr><td>Legal documents</td><td><span class="mono">weeks</span></td><td>Changes only on legal review</td></tr>
+        </tbody>
+        <caption>
+          Written once, correct in both phases. While content is static these annotations cost
+          nothing and every route prerenders; once the provider hits a network, the same
+          annotations <em>are</em> the caching strategy.
+        </caption>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <span class="eyebrow">Migration — a real sequence</span>
+      <h2>Adding the backend, in order</h2>
+    </div>
+    <ol class="phases">
+      <li>
+        <span class="phase-title">Pick the source</span>
+        <p>
+          A git-based CMS (Keystatic, TinaCMS) keeps the static provider and just gives editors
+          a UI — cheapest if the only pain is "an editor can't change copy". A headless CMS
+          (Sanity, Payload) earns its keep once blog and success stories are actively maintained.
+          A real database is needed only when content turns transactional: application tracking,
+          client logins, document uploads.
+        </p>
+      </li>
+      <li>
+        <span class="phase-title">Model the schema from the types</span>
+        <p>
+          <span class="mono">lib/content/types.ts</span> already <em>is</em> the schema —
+          collections, field types, the relation from a success story to its scheme, and the
+          <code>published</code> / <code>displayOrder</code> editorial flags.
+        </p>
+      </li>
+      <li>
+        <span class="phase-title">Write <span class="mono">api-provider.ts</span></span>
+        <p>
+          Implement <code>ContentProvider</code> against the new source, validating responses at
+          the boundary with Zod so a bad payload fails loudly in one place instead of rendering
+          <code>undefined</code> into a live page.
+        </p>
+      </li>
+      <li>
+        <span class="phase-title">Flip one line</span>
+        <p>
+          <code>providers/index.ts</code> selects the provider from an environment variable. Both
+          sources can run side by side during cutover, and rollback is instant.
+        </p>
+      </li>
+      <li>
+        <span class="phase-title">Wire invalidation</span>
+        <p>
+          A webhook route maps the changed collection to its tag and calls
+          <code>revalidateTag</code>. The tags already exist — the CMS just has to name one.
+        </p>
+      </li>
+      <li>
+        <span class="phase-title">Seed the data</span>
+        <p>
+          Because the data is typed and the interface is shared, the migration script imports the
+          static provider and writes straight into the CMS. Collections can move one at a time —
+          blog to the CMS while schemes stay in code, where a policy change gets code review.
+        </p>
+      </li>
+    </ol>
+    <div class="callout">
+      <span class="label">The point</span>
+      <p>No page changes in any of those six steps.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <span class="eyebrow">Status</span>
+      <h2>Built, and what comes next</h2>
+    </div>
+    <ul class="checklist">
+      <li class="done"><span class="mark">DONE</span><span>Content model — 12 entity types, also the future CMS schema</span></li>
+      <li class="done"><span class="mark">DONE</span><span>11 government schemes with benefits, eligibility and guideline PDFs</span></li>
+      <li class="done"><span class="mark">DONE</span><span>12 services, 4 legal documents, homepage composition</span></li>
+      <li class="done"><span class="mark">DONE</span><span>Repository + provider layers with cache tags and lifetimes</span></li>
+      <li class="done"><span class="mark">DONE</span><span>SEO plumbing — metadata, schema.org, generated sitemap and robots</span></li>
+      <li class="done"><span class="mark">DONE</span><span>All 17 routes built and prerendered, including 11 scheme detail pages</span></li>
+      <li class="done"><span class="mark">DONE</span><span>Shared header, footer and UI primitives; design tokens in both themes</span></li>
+      <li class="done"><span class="mark">DONE</span><span>Scheme Explorer with search and government/sector filtering</span></li>
+      <li class="done"><span class="mark">DONE</span><span>Contact form — Server Action, Zod validation, honeypot, DPDP consent</span></li>
+      <li><span class="mark">NEXT</span><span>Deliver enquiries to email or CRM, and add IP-keyed rate limiting</span></li>
+      <li><span class="mark">NEXT</span><span>Brand assets — real logo, favicon, OG image</span></li>
+      <li><span class="mark">NEEDS YOU</span><span>Replace 25 <span class="mono">TODO(brand)</span> placeholders with real details and figures</span></li>
+      <li><span class="mark">NEEDS YOU</span><span>Team members and consented client success stories</span></li>
+      <li><span class="mark">NEEDS YOU</span><span>Legal review of all four documents before launch</span></li>
+    </ul>
+  </section>
+
+  <footer class="colophon">
+    <span>Next.js 16.3.3 · React 19 · Tailwind CSS 4 · TypeScript · Cache Components enabled</span>
+    <span>Full plan: docs/CONTENT-ARCHITECTURE.md · Full audit: docs/source-audit/README.md</span>
+  </footer>
+
+</div>
