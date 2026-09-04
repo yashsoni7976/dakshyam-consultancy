@@ -3,12 +3,12 @@ import { describe, expect, it } from "vitest";
 import { Orb, OrbCluster } from "./orb";
 
 /**
- * The two sparks are permitted here and nowhere else in the system. Match the
- * channels only: jsdom normalises hex to spaced `rgb()`, and each recipe uses
- * the sparks at whatever alpha suits it.
+ * Lighter logo blues are permitted here and nowhere else in the system. Match
+ * the channels only: jsdom normalises hex to spaced `rgb()`, and each recipe
+ * uses the sparks at whatever alpha suits it.
  */
-const VIOLET = "4, 71, 255";
-const EMBER = "255, 71, 4";
+const NAVY = "0, 42, 82";
+const SKY = "23, 141, 205";
 
 describe("Orb", () => {
   it("is decorative, so the whole thing is hidden from assistive technology", () => {
@@ -35,14 +35,14 @@ describe("Orb", () => {
     expect(styleOf(a as HTMLElement)).toBe(styleOf(b as HTMLElement));
   });
 
-  it("keeps a violet note in the shadow so the artwork is not monotone", () => {
+  it("keeps a navy note in the shadow so the artwork is not monotone", () => {
     const { container } = render(<Orb variant="sandstone" />);
-    expect(container.innerHTML).toContain(VIOLET);
+    expect(container.innerHTML).toContain(NAVY);
   });
 
-  it("renders the ember spark at full saturation, as only artwork may", () => {
+  it("renders the sky blue spark at full saturation, as only artwork may", () => {
     const { container } = render(<Orb variant="ember" />);
-    expect(container.innerHTML).toContain(EMBER);
+    expect(container.innerHTML).toContain(SKY);
   });
 
   it("drops the halo layer when blur is off", () => {

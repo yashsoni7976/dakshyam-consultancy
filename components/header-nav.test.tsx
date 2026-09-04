@@ -17,8 +17,8 @@ function setup(pathname = "/") {
   usePathname.mockReturnValue(pathname);
   return render(
     <HeaderNav
-      siteName="Dakshyam Consulting"
-      logoSrc="/brand/logo.svg"
+      logoSrc="/brand/logo.png"
+      logoAlt="Dakshyam Consultancy"
       links={links}
       phoneE164="+910000000000"
       phoneDisplay="+91 00000 00000"
@@ -32,14 +32,16 @@ const desktopNav = () => screen.getAllByRole("navigation", { name: "Primary" })[
 describe("HeaderNav", () => {
   beforeEach(() => usePathname.mockReturnValue("/"));
 
-  it("renders the wordmark as a link home, with a decorative logo", () => {
-    const { container } = setup();
-    expect(screen.getAllByRole("link", { name: /Dakshyam Consulting/ })[0]).toHaveAttribute(
+  it("renders the logo as a link home", () => {
+    setup();
+    expect(screen.getAllByRole("link", { name: "Dakshyam Consultancy" })[0]).toHaveAttribute(
       "href",
       "/",
     );
-    expect(container.querySelector("img")).toHaveAttribute("aria-hidden", "true");
-    expect(container.querySelector("img")).toHaveAttribute("alt", "");
+    expect(screen.getByRole("img", { name: "Dakshyam Consultancy" })).toHaveAttribute(
+      "src",
+      "/brand/logo.png",
+    );
   });
 
   it("marks the current route with aria-current", () => {
@@ -113,11 +115,11 @@ describe("HeaderNav", () => {
     usePathname.mockReturnValue("/contact");
     rerender(
       <HeaderNav
-        siteName="Dakshyam Consulting"
-        logoSrc="/brand/logo.svg"
+        logoSrc="/brand/logo.png"
+        logoAlt="Dakshyam Consultancy"
         links={links}
-        phoneE164="+910000000000"
-        phoneDisplay="+91 00000 00000"
+        phoneE164="+917877223715"
+        phoneDisplay="+91 78772 23715"
       />,
     );
     expect(screen.getByRole("button", { name: "Open menu" })).toBeInTheDocument();

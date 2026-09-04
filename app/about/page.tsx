@@ -124,6 +124,14 @@ export default async function AboutPage() {
           {team.map((member) => (
             <li key={member.slug}>
               <Card className="flex h-full flex-col gap-3">
+                {member.photo ? (
+                  // eslint-disable-next-line @next/next/no-img-element -- team photos are static JPEGs
+                  <img
+                    src={member.photo.src}
+                    alt={member.photo.alt}
+                    className="aspect-[4/3] w-full rounded-card object-cover object-top"
+                  />
+                ) : null}
                 <h3 className="display-type text-heading-xs text-ink">{member.name}</h3>
                 <p className="label-mono">{member.role}</p>
                 {member.bio ? (

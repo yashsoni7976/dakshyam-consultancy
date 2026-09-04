@@ -15,13 +15,9 @@ export async function SiteFooter() {
     <footer className="mt-auto border-t border-stone bg-taupe">
       <div className="container-page grid gap-12 py-16 md:grid-cols-2 lg:grid-cols-4">
         <div className="flex flex-col gap-5">
-          <Link
-            href="/"
-            className="flex w-fit items-center gap-2.5 text-body font-medium tracking-tight text-ink"
-          >
-            {/* eslint-disable-next-line @next/next/no-img-element -- logo is an SVG of unknown intrinsic size */}
-            <img src={site.logo.src} alt="" aria-hidden="true" className="h-7 w-auto" />
-            <span>{site.name}</span>
+          <Link href="/" className="flex w-fit items-center">
+            {/* eslint-disable-next-line @next/next/no-img-element -- logo is a raster asset of known aspect ratio */}
+            <img src={site.logo.src} alt={site.logo.alt} className="h-7 w-auto" />
           </Link>
           <p className="max-w-xs text-body-sm text-smoke">{site.description}</p>
           <ul className="flex flex-wrap gap-2">
@@ -99,6 +95,8 @@ export async function SiteFooter() {
             <span>
               © {year} {site.legalName}
             </span>
+            <span>CIN: {site.registration.cin}</span>
+            <span>GSTIN: {site.registration.gstin}</span>
             {nav.legal.map((link) => (
               <Link
                 key={link.href}

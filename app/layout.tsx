@@ -31,7 +31,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const site = await getSiteIdentity();
   return {
     metadataBase: new URL(site.url),
-    // Every page title becomes "<page> | Dakshyam Consulting" unless it opts out.
+    // Every page title becomes "<page> | Dakshyam Consultancy" unless it opts out.
     title: { default: `${site.name} — ${site.tagline}`, template: `%s | ${site.name}` },
     description: site.description,
     applicationName: site.name,

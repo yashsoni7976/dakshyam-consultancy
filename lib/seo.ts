@@ -57,6 +57,8 @@ export async function buildOrganizationJsonLd() {
     email: site.email,
     telephone: site.phoneE164,
     foundingDate: String(site.foundedYear),
+    taxID: site.registration.gstin,
+    identifier: site.registration.cin,
     areaServed: { "@type": "State", name: "Rajasthan" },
     sameAs: site.social.map((profile) => profile.url),
     openingHours: site.openingHours,

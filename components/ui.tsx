@@ -49,7 +49,7 @@ export function Divider({ className }: { className?: string }) {
 }
 
 /**
- * Technical section label in mono, in the sandstone accent.
+ * Technical section label in mono, in the brand navy accent.
  *
  * Only *section* eyebrows are accented. The bare `label-mono` utility stays
  * neutral for metadata labels — the proof strip, footer column headings,
@@ -419,7 +419,7 @@ export function CtaBanner({
           className="pointer-events-none absolute -right-24 -top-24 size-72 rounded-full opacity-60 blur-3xl sm:size-96"
           style={{
             background:
-              "radial-gradient(circle at 40% 40%, #ff4704 0%, #a34a34 45%, #0447ff 80%, transparent 92%)",
+              "radial-gradient(circle at 40% 40%, #178dcd 0%, #004382 45%, #002a52 80%, transparent 92%)",
           }}
         />
         <div className="relative flex max-w-2xl flex-col items-start gap-5">

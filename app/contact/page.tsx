@@ -113,6 +113,15 @@ export default async function ContactPage() {
             {site.offices.map((office) => (
               <Card key={office.id} className="flex flex-col gap-3">
                 <h2 className="label-mono">{office.label}</h2>
+                {office.phoneDisplay ? (
+                  <a
+                    href={`tel:${office.phoneE164}`}
+                    className="flex items-center gap-2 text-body-sm text-smoke transition-colors hover:text-ink"
+                  >
+                    <Phone className="size-3.5 shrink-0 text-ash" aria-hidden="true" />
+                    {office.phoneDisplay}
+                  </a>
+                ) : null}
                 <address className="flex items-start gap-3 text-body-sm not-italic text-smoke">
                   <MapPin className="mt-1 size-3.5 shrink-0 text-ash" aria-hidden="true" />
                   <span>

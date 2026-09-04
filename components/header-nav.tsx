@@ -18,14 +18,14 @@ import { ButtonLink, cx } from "./ui";
  * right as the only weight.
  */
 export function HeaderNav({
-  siteName,
   logoSrc,
+  logoAlt,
   links,
   phoneE164,
   phoneDisplay,
 }: {
-  siteName: string;
   logoSrc: string;
+  logoAlt: string;
   links: NavLink[];
   phoneE164: string;
   phoneDisplay: string;
@@ -49,13 +49,9 @@ export function HeaderNav({
   return (
     <header className="sticky top-0 z-50 border-b border-stone bg-eggshell/85 backdrop-blur-sm">
       <div className="container-page flex h-16 items-center justify-between gap-6">
-        <Link
-          href="/"
-          className="flex shrink-0 items-center gap-2.5 text-body font-medium tracking-tight text-ink"
-        >
-          {/* eslint-disable-next-line @next/next/no-img-element -- logo is an SVG of unknown intrinsic size */}
-          <img src={logoSrc} alt="" aria-hidden="true" className="h-7 w-auto" />
-          <span>{siteName}</span>
+        <Link href="/" className="flex shrink-0 items-center">
+          {/* eslint-disable-next-line @next/next/no-img-element -- logo is a raster asset of known aspect ratio */}
+          <img src={logoSrc} alt={logoAlt} className="h-7 w-auto" />
         </Link>
 
         <nav

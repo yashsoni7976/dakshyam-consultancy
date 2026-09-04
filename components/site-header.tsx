@@ -6,8 +6,8 @@ export async function SiteHeader() {
 
   return (
     <HeaderNav
-      siteName={site.name}
       logoSrc={site.logo.src}
+      logoAlt={site.logo.alt}
       links={nav.primary}
       phoneE164={site.phoneE164}
       phoneDisplay={site.phoneDisplay}

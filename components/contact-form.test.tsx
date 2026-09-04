@@ -7,7 +7,7 @@ import { ContactForm } from "./contact-form";
 const { submitEnquiry } = vi.hoisted(() => ({ submitEnquiry: vi.fn() }));
 vi.mock("@/app/actions/contact", () => ({ submitEnquiry }));
 
-const CONSENT = "I consent to Dakshyam Consulting processing this enquiry, per the";
+const CONSENT = "I consent to Dakshyam Consultancy processing this enquiry, per the";
 
 /** Resolves the action to a fixed next-state, as the real one would. */
 const respond = (state: ContactState) => submitEnquiry.mockResolvedValue(state);

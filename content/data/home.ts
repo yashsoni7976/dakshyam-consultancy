@@ -45,9 +45,9 @@ export const impactStats: Stat[] = [
 
 export const home: HomePageContent = {
   hero: {
-    eyebrow: "Subsidy and project finance consultants for Rajasthan",
-    headingLines: ["Connect.", "Apply. Prosper."],
-    body: "We guide MSMEs and startups to unlock growth through expert project finance and specialised consultancy for every government subsidy available in Rajasthan.",
+    eyebrow: "Empowering industries. Building tomorrow.",
+    headingLines: ["From Idea", "To Industry"],
+    body: "We transform business ideas into successful industries through finance, subsidies, registrations and strategic guidance — from eligibility to disbursement across Rajasthan.",
     primaryCta: { label: "Explore Schemes", href: "/schemes" },
     secondaryCta: { label: "Talk to an Expert", href: "/contact" },
     badges: [

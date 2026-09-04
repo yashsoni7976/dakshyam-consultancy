@@ -17,7 +17,7 @@ export const blogPosts: BlogPost[] = [
     title: "PMEGP or PMFME: which subsidy fits a food processing unit?",
     excerpt:
       "Both are central schemes, both pay a capital subsidy, and a food processing project in Rajasthan will often look eligible for either. The differences that decide it are the project size, who owns the entity, and how much you can put in yourself.",
-    author: "Dakshyam Consulting",
+    author: "Dakshyam Consultancy",
     publishedAt: "2026-08-20",
     tags: ["PMEGP", "PMFME", "Food Processing"],
     published: true,

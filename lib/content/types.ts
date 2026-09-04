@@ -30,7 +30,15 @@ export interface Office {
   country: string;
   /** Marks the registered head office for schema.org and the footer. */
   isHeadOffice: boolean;
+  phoneE164?: string;
+  phoneDisplay?: string;
   mapUrl?: string;
+}
+
+export interface CompanyRegistration {
+  cin: string;
+  gstin: string;
+  pan: string;
 }
 
 export interface SocialProfile {
@@ -61,6 +69,8 @@ export interface SiteIdentity {
   /** Footer/legal disclaimer shown site-wide. */
   disclaimer: string;
   foundedYear: number;
+  /** MCA / GST identifiers shown in the footer and legal pages. */
+  registration: CompanyRegistration;
 }
 
 /* -------------------------------------------------------------------------- */

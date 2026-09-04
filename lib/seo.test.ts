@@ -75,6 +75,8 @@ describe("buildOrganizationJsonLd", () => {
     expect(node.email).toBe(site.email);
     expect(node.telephone).toBe(site.phoneE164);
     expect(node.foundingDate).toBe(String(site.foundedYear));
+    expect(node.taxID).toBe(site.registration.gstin);
+    expect(node.identifier).toBe(site.registration.cin);
     expect(node.sameAs).toEqual(site.social.map((profile) => profile.url));
   });
 

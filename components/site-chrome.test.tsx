@@ -16,7 +16,7 @@ describe("SiteHeader", () => {
     const [site, nav] = await Promise.all([getSiteIdentity(), getNavigation()]);
     render(await SiteHeader());
 
-    expect(screen.getAllByText(site.name).length).toBeGreaterThan(0);
+    expect(screen.getByRole("img", { name: site.logo.alt })).toBeInTheDocument();
     for (const link of nav.primary) {
       expect(screen.getAllByRole("link", { name: link.label }).length).toBeGreaterThan(0);
     }
@@ -61,6 +61,13 @@ describe("SiteFooter", () => {
     const address = container.querySelector("address")!;
     expect(address).toHaveTextContent(head.city);
     expect(address).toHaveTextContent(head.postalCode);
+  });
+
+  it("prints registration identifiers in the footer bar", async () => {
+    const site = await getSiteIdentity();
+    render(await SiteFooter());
+    expect(screen.getByText(`CIN: ${site.registration.cin}`)).toBeInTheDocument();
+    expect(screen.getByText(`GSTIN: ${site.registration.gstin}`)).toBeInTheDocument();
   });
 
   it("opens social profiles in a new tab, rel-safe", async () => {
