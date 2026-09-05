@@ -68,7 +68,7 @@ describe("SchemeExplorer", () => {
     const state = screen.getByRole("button", { name: "State Govt" });
     await userEvent.click(state);
     expect(state).toHaveAttribute("aria-pressed", "true");
-    expect(state).toHaveClass("bg-sandstone-wash", "text-sandstone-deep");
+    expect(state).toHaveClass("bg-brand", "text-white");
     expect(screen.getByRole("button", { name: "All schemes" })).toHaveAttribute(
       "aria-pressed",
       "false",
@@ -137,7 +137,9 @@ describe("SchemeExplorer", () => {
 
   it("offers a reset only while a filter is applied, and it clears all three", async () => {
     setup();
-    expect(screen.queryByRole("button", { name: "Clear filters" })).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("button", { name: "Clear filters" }),
+    ).not.toBeInTheDocument();
 
     await userEvent.type(screen.getByLabelText("Search"), "PMEGP");
     await userEvent.click(screen.getByRole("button", { name: "Central Govt" }));
@@ -171,7 +173,7 @@ describe("SchemeExplorer", () => {
 
   it("puts the accent rule on the key advantage", () => {
     const { container } = setup();
-    expect(container.querySelector(".border-sandstone-deep")).toHaveTextContent(
+    expect(container.querySelector(".border-deep-ink")).toHaveTextContent(
       "Up to 35% subsidy",
     );
   });

@@ -35,8 +35,10 @@ export default async function SuccessStoriesPage() {
           />
         ) : (
           <>
-            <p className="border-b border-stone pb-6 text-body-sm text-smoke">
-              <span className="font-medium text-ink tabular-nums">{formatInr(total)}</span>{" "}
+            <p className="border-b border-border pb-6 text-body-sm text-slate">
+              <span className="font-medium text-deep-ink tabular-nums">
+                {formatInr(total)}
+              </span>{" "}
               secured across {stories.length} published{" "}
               {stories.length === 1 ? "engagement" : "engagements"}.
             </p>
@@ -45,15 +47,15 @@ export default async function SuccessStoriesPage() {
                 <li key={story.slug}>
                   <Card className="flex h-full flex-col gap-3">
                     <Badge>{story.schemeCode}</Badge>
-                    <h2 className="text-subheading font-medium text-ink">
+                    <h2 className="text-subheading font-medium text-deep-ink">
                       {story.clientName}
                     </h2>
-                    <p className="text-body-sm text-smoke">{story.headline}</p>
-                    <p className="display-type mt-auto pt-5 text-heading-xs text-ink tabular-nums">
+                    <p className="text-body-sm text-slate">{story.headline}</p>
+                    <p className="mt-auto pt-5 serif-type text-heading-sm text-deep-ink tabular-nums">
                       {formatInr(story.amountInr)}
                     </p>
                     {story.sector || story.location ? (
-                      <p className="text-micro text-smoke">
+                      <p className="text-micro text-slate">
                         {[story.sector, story.location].filter(Boolean).join(" · ")}
                       </p>
                     ) : null}

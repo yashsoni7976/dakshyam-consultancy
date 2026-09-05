@@ -5,12 +5,6 @@ export async function SiteHeader() {
   const [site, nav] = await Promise.all([getSiteIdentity(), getNavigation()]);
 
   return (
-    <HeaderNav
-      logoSrc={site.logo.src}
-      logoAlt={site.logo.alt}
-      links={nav.primary}
-      phoneE164={site.phoneE164}
-      phoneDisplay={site.phoneDisplay}
-    />
+    <HeaderNav logoSrc={site.logo.src} logoAlt={site.logo.alt} links={nav.primary} />
   );
 }

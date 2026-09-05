@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Geist_Mono, Inter } from "next/font/google";
+import { Hedvig_Letters_Serif, Inter } from "next/font/google";
 import { PageTransition } from "@/components/page-transition";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
@@ -7,23 +7,19 @@ import { getSiteIdentity } from "@/lib/content";
 import { buildOrganizationJsonLd } from "@/lib/seo";
 import "./globals.css";
 
-/**
- * Inter carries the whole system. It runs at 400/500 for body, nav and
- * buttons, and at 300 as the substitute for Waldenburg on display headlines —
- * the whisper weight the design leans on for authority.
- */
+/** Inter — all UI and body text. */
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
-  weight: ["300", "400", "500"],
+  weight: ["400", "500", "600"],
   display: "swap",
 });
 
-/** Technical micro-copy only — section labels and metadata. */
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+/** Hedvig Letters Serif — display and section headlines (variable font). */
+const hedvigSerif = Hedvig_Letters_Serif({
+  variable: "--font-hedvig-letters-serif",
   subsets: ["latin"],
-  weight: ["400"],
+  weight: "variable",
   display: "swap",
 });
 
@@ -31,7 +27,6 @@ export async function generateMetadata(): Promise<Metadata> {
   const site = await getSiteIdentity();
   return {
     metadataBase: new URL(site.url),
-    // Every page title becomes "<page> | Dakshyam Consultancy" unless it opts out.
     title: { default: `${site.name} — ${site.tagline}`, template: `%s | ${site.name}` },
     description: site.description,
     applicationName: site.name,
@@ -39,9 +34,8 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-/** Light is the whole system; there is no dark variant to advertise. */
 export const viewport: Viewport = {
-  themeColor: "#fdfcfc",
+  themeColor: "#f9fbf2",
   colorScheme: "light",
 };
 
@@ -51,12 +45,12 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en-IN"
-      className={`${inter.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${inter.variable} ${hedvigSerif.variable} h-full antialiased`}
     >
-      <body className="flex min-h-full flex-col bg-eggshell font-sans text-ink">
+      <body className="flex min-h-full flex-col bg-canvas font-sans text-deep-ink">
         <a
           href="#main"
-          className="sr-only focus:not-sr-only focus:absolute focus:left-6 focus:top-6 focus:z-50 focus:rounded-full focus:bg-ink focus:px-4 focus:py-2.5 focus:text-body-sm focus:font-medium focus:text-eggshell"
+          className="sr-only focus:not-sr-only focus:absolute focus:top-6 focus:left-6 focus:z-50 focus:rounded-full focus:bg-deep-ink focus:px-4 focus:py-2.5 focus:text-body-sm focus:font-medium focus:text-white"
         >
           Skip to content
         </a>
@@ -67,7 +61,6 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
         <SiteFooter />
         <script
           type="application/ld+json"
-          // Serialised server-side from trusted, in-repo content.
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </body>

@@ -32,18 +32,18 @@ describe("Section", () => {
     const { container } = render(<Section>body</Section>);
     const section = container.querySelector("section")!;
     expect(section).toHaveClass("section-y");
-    expect(section).not.toHaveClass("bg-taupe");
+    expect(section).not.toHaveClass("bg-soft-meadow");
     expect(section).not.toHaveClass("border-t");
   });
 
-  it("takes the taupe band and an optional hairline", () => {
+  it("takes the meadow band and an optional hairline", () => {
     const { container } = render(
-      <Section tone="taupe" divider>
+      <Section tone="meadow" divider>
         body
       </Section>,
     );
     const section = container.querySelector("section")!;
-    expect(section).toHaveClass("bg-taupe", "border-t", "border-stone");
+    expect(section).toHaveClass("bg-soft-meadow", "border-t", "border-border");
   });
 
   it("wraps content in the shared page column", () => {
@@ -58,25 +58,25 @@ describe("Section", () => {
 });
 
 describe("Divider", () => {
-  it("renders a stone hairline rule", () => {
+  it("renders a subtle border rule", () => {
     const { container } = render(<Divider />);
-    expect(container.querySelector("hr")).toHaveClass("border-t", "border-stone");
+    expect(container.querySelector("hr")).toHaveClass("border-t", "border-border");
   });
 });
 
 describe("Eyebrow", () => {
-  it("carries the sandstone accent, unlike the bare label utility", () => {
+  it("carries the small caps label treatment", () => {
     render(<Eyebrow>Track record</Eyebrow>);
     const el = screen.getByText("Track record");
-    expect(el).toHaveClass("label-mono", "text-sandstone-deep");
+    expect(el).toHaveClass("label-caps", "text-deep-ink");
   });
 });
 
 describe("SectionHeading", () => {
-  it("renders a level-2 heading in the display weight", () => {
+  it("renders a level-2 heading in the serif display weight", () => {
     render(<SectionHeading title="Real impact" />);
     const heading = screen.getByRole("heading", { level: 2, name: "Real impact" });
-    expect(heading).toHaveClass("display-type");
+    expect(heading).toHaveClass("serif-type");
   });
 
   it("renders the eyebrow and description only when supplied", () => {
@@ -97,12 +97,19 @@ describe("SectionHeading", () => {
 describe("PageHero", () => {
   it("renders exactly one level-1 heading", () => {
     render(<PageHero title="About us" />);
-    expect(screen.getByRole("heading", { level: 1, name: "About us" })).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { level: 1, name: "About us" }),
+    ).toBeInTheDocument();
   });
 
   it("renders eyebrow, description, children and aside when given", () => {
     render(
-      <PageHero eyebrow="About" title="T" description="D" aside={<i data-testid="aside" />}>
+      <PageHero
+        eyebrow="About"
+        title="T"
+        description="D"
+        aside={<i data-testid="aside" />}
+      >
         <span data-testid="child" />
       </PageHero>,
     );
@@ -119,11 +126,11 @@ describe("PageHero", () => {
 });
 
 describe("ButtonLink", () => {
-  it("renders an internal link with the filled pill by default", () => {
+  it("renders an internal link with the brand-blue pill by default", () => {
     render(<ButtonLink href="/contact">Talk to us</ButtonLink>);
     const link = screen.getByRole("link", { name: "Talk to us" });
     expect(link).toHaveAttribute("href", "/contact");
-    expect(link).toHaveClass("rounded-full", "bg-ink");
+    expect(link).toHaveClass("rounded-full", "bg-brand", "w-full", "sm:w-auto");
     expect(link).not.toHaveAttribute("target");
   });
 
@@ -186,10 +193,10 @@ describe("Button", () => {
 });
 
 describe("TextLink", () => {
-  it("renders an accented underlined link", () => {
+  it("renders an underlined deep-ink link", () => {
     render(<TextLink href="/schemes">All schemes</TextLink>);
     expect(screen.getByRole("link", { name: "All schemes" })).toHaveClass(
-      "text-sandstone-deep",
+      "text-deep-ink",
       "underline",
     );
   });
@@ -208,26 +215,24 @@ describe("TextLink", () => {
 });
 
 describe("Card", () => {
-  it("is a flat taupe panel with no border or shadow by default", () => {
+  it("is a flat meadow panel with no border or shadow by default", () => {
     const { container } = render(<Card>content</Card>);
     const card = container.firstChild as HTMLElement;
-    expect(card).toHaveClass("rounded-card", "bg-taupe");
+    expect(card).toHaveClass("rounded-card", "bg-soft-meadow");
     expect(card.className).not.toMatch(/shadow|border/);
   });
 
   it.each([
-    ["raised", "shadow-whisper"],
-    ["outline", "border"],
+    ["canvas", "bg-canvas"],
+    ["white", "bg-white"],
   ] as const)("renders the %s tone", (tone, expected) => {
     const { container } = render(<Card tone={tone}>c</Card>);
     expect(container.firstChild).toHaveClass(expected);
   });
 
-  it("uses the larger radius at the large size", () => {
-    const { container } = render(
-      <Card size="lg">c</Card>,
-    );
-    expect(container.firstChild).toHaveClass("rounded-card-lg");
+  it("uses generous padding at the large size", () => {
+    const { container } = render(<Card size="lg">c</Card>);
+    expect(container.firstChild).toHaveClass("p-8", "sm:p-12");
   });
 
   it("accepts the small size and extra classes", () => {
@@ -236,47 +241,47 @@ describe("Card", () => {
         c
       </Card>,
     );
-    expect(container.firstChild).toHaveClass("p-5", "custom");
+    expect(container.firstChild).toHaveClass("p-6", "custom");
   });
 });
 
 describe("IconPlate", () => {
-  it("tints the plate with the accent wash", () => {
+  it("sits the icon on a canvas pill", () => {
     render(
       <IconPlate>
         <svg data-testid="glyph" />
       </IconPlate>,
     );
     expect(screen.getByTestId("glyph").parentElement).toHaveClass(
-      "bg-sandstone-wash",
-      "text-sandstone-deep",
+      "bg-canvas",
+      "text-deep-ink",
     );
   });
 });
 
 describe("Tag", () => {
-  it("renders a neutral outlined pill", () => {
+  it("renders a neutral pill", () => {
     render(<Tag>Agro</Tag>);
-    expect(screen.getByText("Agro")).toHaveClass("rounded-full", "border-stone");
+    expect(screen.getByText("Agro")).toHaveClass("rounded-full", "bg-canvas");
   });
 });
 
 describe("Badge", () => {
-  it("marks central schemes with a filled accent dot", () => {
+  it("marks central schemes with a filled deep-ink dot", () => {
     const { container } = render(<Badge tone="central">Central Govt</Badge>);
-    expect(container.querySelector("span span")).toHaveClass("bg-sandstone-deep");
+    expect(container.querySelector("span span")).toHaveClass("bg-deep-ink");
   });
 
   it("marks state schemes with a hollow ring instead of a second colour", () => {
     const { container } = render(<Badge tone="state">State Govt</Badge>);
     const dot = container.querySelector("span span")!;
-    expect(dot).toHaveClass("ring-sandstone");
-    expect(dot).not.toHaveClass("bg-sandstone-deep");
+    expect(dot).toHaveClass("ring-deep-ink/30");
+    expect(dot).not.toHaveClass("bg-deep-ink");
   });
 
   it("defaults to the neutral dot", () => {
     const { container } = render(<Badge>PMEGP</Badge>);
-    expect(container.querySelector("span span")).toHaveClass("bg-ash");
+    expect(container.querySelector("span span")).toHaveClass("bg-slate");
   });
 
   it("hides the dot from assistive technology", () => {
@@ -291,7 +296,7 @@ describe("StatRow", () => {
     { id: "b", value: "₹48 Cr", label: "Subsidy secured" },
   ];
 
-  it("renders each stat as a definition pair", () => {
+  it("renders each stat as a definition pair inside a card", () => {
     render(<StatRow stats={stats} />);
     expect(screen.getByText("120+").tagName).toBe("DD");
     expect(screen.getByText("Units served").tagName).toBe("DT");
@@ -303,24 +308,18 @@ describe("StatRow", () => {
     expect(container.querySelectorAll("p")).toHaveLength(0);
   });
 
-  it("rules each cell rather than filling a grid, so a partial row leaves no hole", () => {
-    const { container } = render(<StatRow stats={stats} />);
-    for (const cell of container.querySelectorAll("dl > div")) {
-      expect(cell).toHaveClass("border-t", "border-stone");
-    }
-    expect(container.querySelector("dl")).not.toHaveClass("bg-stone");
-  });
-
   it("renders nothing but the list when handed no stats", () => {
     const { container } = render(<StatRow stats={[]} />);
-    expect(container.querySelectorAll("dl > div")).toHaveLength(0);
+    expect(container.querySelectorAll("dl > *")).toHaveLength(0);
   });
 });
 
 describe("EmptyState", () => {
   it("explains what will appear rather than looking broken", () => {
     render(<EmptyState title="No articles yet" description="We are writing them." />);
-    expect(screen.getByRole("heading", { level: 3 })).toHaveTextContent("No articles yet");
+    expect(screen.getByRole("heading", { level: 3 })).toHaveTextContent(
+      "No articles yet",
+    );
     expect(screen.getByText("We are writing them.")).toBeInTheDocument();
   });
 
@@ -329,9 +328,16 @@ describe("EmptyState", () => {
     expect(screen.queryByRole("link")).not.toBeInTheDocument();
 
     rerender(
-      <EmptyState title="T" description="D" action={{ label: "Browse", href: "/schemes" }} />,
+      <EmptyState
+        title="T"
+        description="D"
+        action={{ label: "Browse", href: "/schemes" }}
+      />,
     );
-    expect(screen.getByRole("link", { name: "Browse" })).toHaveAttribute("href", "/schemes");
+    expect(screen.getByRole("link", { name: "Browse" })).toHaveAttribute(
+      "href",
+      "/schemes",
+    );
   });
 });
 
@@ -342,9 +348,9 @@ describe("CtaBanner", () => {
     primary: { label: "Get advice", href: "/contact" },
   };
 
-  it("renders on the warm ink panel", () => {
+  it("renders on the deep ink panel", () => {
     const { container } = render(<CtaBanner {...props} />);
-    expect(container.querySelector(".bg-ink-warm")).toBeInTheDocument();
+    expect(container.querySelector(".bg-deep-ink")).toBeInTheDocument();
   });
 
   it("renders the primary action, and the secondary only when given", () => {
@@ -356,8 +362,8 @@ describe("CtaBanner", () => {
     expect(screen.getAllByRole("link")).toHaveLength(2);
   });
 
-  it("hides the decorative spark from assistive technology", () => {
+  it("hides the decorative blobs from assistive technology", () => {
     const { container } = render(<CtaBanner {...props} />);
-    expect(container.querySelector("[aria-hidden='true']")).toBeInTheDocument();
+    expect(container.querySelectorAll("[aria-hidden='true']").length).toBeGreaterThan(0);
   });
 });

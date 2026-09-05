@@ -1,118 +1,91 @@
 @import "tailwindcss";
 
 /* ---------------------------------------------------------------------------
-   Design tokens — warm cream editorial
+   Design tokens — sunlit wildflower compliance atelier
    ---------------------------------------------------------------------------
-   Source of truth: DESIGN.md.
+   Source of truth: DESIGN2.md.
 
-   An eggshell paper canvas holding black ink, with one layer of warm taupe
-   surfaces and stone hairlines. The interactive accent is Dakshyam navy —
-   sampled from the logo (#004382) — used as punctuation on labels, links,
-   focus rings and tinted plates. ~97% achromatic; lighter logo blue (#178dcd)
-   appears in product visuals only.
+   Warm cream canvas, green-tinted meadow cards, deep navy-violet ink, and a
+   logo blue primary action. Hedvig Letters Serif carries headlines;
+   Inter handles every functional layer. Decorative moss and fuchsia blobs
+   live in hero artwork only — never in UI chrome.
 
-   Light is the whole system. There is no dark variant — the warmth of the
-   canvas is the brand, and inverting it loses it.
+   Light is the whole system. There is no dark variant.
 --------------------------------------------------------------------------- */
 
 @theme {
-  /* Surfaces and ink */
-  --color-eggshell: #fdfcfc;
-  --color-taupe: #f5f3f1;
-  --color-stone: #ebe8e4;
-  --color-hairline: #e5e5e5;
+  /* Colors */
+  --color-deep-ink: #130e30;
+  --color-hi-yellow: #ffe228;
+  /* Sampled from the Dakshyam logo mark — the sole primary action colour. */
+  --color-brand: #005696;
+  --color-moss-green: #59e25d;
+  --color-fuchsia: #e261e5;
+  --color-slate: #5f5c6e;
+  --color-canvas: #f9fbf2;
+  --color-soft-meadow: #eff2e5;
+  --color-charcoal: #222222;
+  --color-onyx: #000000;
+  --color-white: #ffffff;
 
-  /* Text */
-  --color-ink: #000000;
-  --color-graphite: #44403b;
-  --color-smoke: #777169;
-
-  /* Ash reaches only 2.6:1 on the canvas — decorative icons, placeholders
-     and disabled affordances only, never a run of copy. */
-  --color-ash: #a59f97;
-
-  /* Brand blue — the interactive accent, sampled from the Dakshyam logo.
-     Token names retain the sandstone prefix for Tailwind compatibility.
-     `deep` is the logo navy (#004382, 9.6:1 on canvas); the mid step is for
-     icons, rules and display text. Punctuation only — not a button fill. */
-  --color-sandstone-wash: #eef4fa;
-  --color-sandstone-line: #c5d9eb;
-  --color-sandstone: #1565a8;
-  --color-sandstone-deep: #004382;
-
-  /* Product-visual sparks — artwork only, never UI chrome */
-  --color-violet: #178dcd;
-  --color-ember: #4da3d9;
-
-  /* The single inverted surface, for the closing CTA panel. Logo navy-black —
-     reads as black while holding the brand's cool undertone. */
-  --color-ink-warm: #002a52;
-
-  /* Functional validation state — kept distinct from the brand blues. */
+  /* Functional validation — kept distinct from brand palette. */
   --color-alert: #b3300a;
 
-  /* Type families. Waldenburg is substituted by Inter 300 per DESIGN.md. */
-  --font-display: var(--font-inter), ui-sans-serif, system-ui, -apple-system,
-    "Segoe UI", Roboto, sans-serif;
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system,
-    "Segoe UI", Roboto, sans-serif;
-  --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo,
-    monospace;
+  /* Subtle structural border on warm surfaces. */
+  --color-border: rgb(19 14 48 / 0.1);
 
-  /* Type scale. Display sizes carry their own weight-300 and tight tracking so
-     a single utility can never be applied at the wrong weight. Body sizes take
-     the opposite tracking direction — that contrast is deliberate. */
+  /* Type families */
+  --font-serif:
+    var(--font-hedvig-letters-serif), ui-serif, Georgia, Cambria, "Times New Roman",
+    Times, serif;
+  --font-sans:
+    var(--font-inter), ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+    sans-serif;
+
+  /* Type scale */
   --text-caption: 10px;
-  --text-caption--line-height: 1.6;
-
-  --text-micro: 12px;
-  --text-micro--line-height: 1.5;
+  --text-caption--line-height: 1.2;
+  --text-caption--letter-spacing: -0.02em;
 
   --text-body-sm: 14px;
   --text-body-sm--line-height: 1.5;
-  --text-body-sm--letter-spacing: 0.01em;
+  --text-body-sm--letter-spacing: -0.01em;
 
   --text-body: 16px;
   --text-body--line-height: 1.5;
-  --text-body--letter-spacing: 0.01em;
+  --text-body--letter-spacing: -0.01em;
 
   --text-subheading: 18px;
-  --text-subheading--line-height: 1.6;
+  --text-subheading--line-height: 1.5;
+  --text-subheading--letter-spacing: -0.01em;
 
-  --text-body-lg: 20px;
-  --text-body-lg--line-height: 1.35;
+  --text-heading-sm: 22px;
+  --text-heading-sm--line-height: 1.25;
+  --text-heading-sm--letter-spacing: -0.01em;
+  --text-heading-sm--font-weight: 700;
 
-  --text-heading-xs: 24px;
-  --text-heading-xs--line-height: 1.2;
-  --text-heading-xs--letter-spacing: -0.02em;
-  --text-heading-xs--font-weight: 300;
+  --text-heading: 32px;
+  --text-heading--line-height: 1.15;
+  --text-heading--letter-spacing: -0.01em;
+  --text-heading--font-weight: 700;
 
-  --text-heading-sm: 32px;
-  --text-heading-sm--line-height: 1.13;
-  --text-heading-sm--letter-spacing: -0.02em;
-  --text-heading-sm--font-weight: 300;
+  --text-heading-lg: 48px;
+  --text-heading-lg--line-height: 1.1;
+  --text-heading-lg--letter-spacing: -0.01em;
+  --text-heading-lg--font-weight: 700;
 
-  --text-heading: 36px;
-  --text-heading--line-height: 1.17;
-  --text-heading--letter-spacing: -0.02em;
-  --text-heading--font-weight: 300;
+  --text-display: 64px;
+  --text-display--line-height: 1;
+  --text-display--letter-spacing: -0.01em;
+  --text-display--font-weight: 700;
 
-  --text-display: 48px;
-  --text-display--line-height: 1.08;
-  --text-display--letter-spacing: -0.02em;
-  --text-display--font-weight: 300;
+  /* Radii — pills everywhere except cards and images. */
+  --radius-card: 24px;
+  --radius-image: 24px;
+  --radius-pill: 9999px;
 
-  /* Radii. Pills and 20/24px cards are the system's signature shapes; 4px on
-     inputs is the one place the pill is dropped. */
-  --radius-input: 4px;
-  --radius-plate: 10px;
-  --radius-card: 20px;
-  --radius-card-lg: 24px;
-
-  /* Elevation — near-invisible by design. Prefer a hairline border. */
-  --shadow-whisper: rgba(0, 0, 0, 0.4) 0px 0px 1px 0px,
-    rgba(0, 0, 0, 0.04) 0px 1px 1px 0px, rgba(0, 0, 0, 0.04) 0px 2px 4px 0px;
-  --shadow-inset-hairline: rgb(235, 232, 228) 0px 0px 0px 0.5px inset;
+  /* Layout */
+  --page-max-width: 75rem;
 }
 
 :root {
@@ -139,33 +112,34 @@
   }
 
   body {
-    background: var(--color-eggshell);
-    color: var(--color-ink);
+    background: var(--color-canvas);
+    color: var(--color-deep-ink);
     font-family: var(--font-sans);
     font-size: 16px;
     font-weight: 400;
+    font-feature-settings:
+      "ss01" on,
+      "cv11" on;
   }
 
-  /* Display type is whisper-weight everywhere; never bolded. */
   h1,
   h2,
   h3 {
-    font-weight: 300;
+    font-family: var(--font-serif);
+    font-weight: 700;
+    letter-spacing: -0.01em;
     text-wrap: balance;
   }
 
-  /* The spec names sandstone-wash for selection, but #faf1ec against a
-     #fdfcfc canvas is a 1% difference and reads as no selection at all.
-     Stepping up to the line tone keeps it on-palette and actually visible. */
   ::selection {
-    background: var(--color-sandstone-line);
-    color: var(--color-ink);
+    background: rgb(0 86 150 / 0.18);
+    color: var(--color-deep-ink);
   }
 
   :focus-visible {
-    outline: 1.5px solid var(--color-sandstone-deep);
+    outline: 2px solid var(--color-deep-ink);
     outline-offset: 2px;
-    border-radius: 2px;
+    border-radius: var(--radius-pill);
   }
 }
 
@@ -173,12 +147,10 @@
    Utilities
 --------------------------------------------------------------------------- */
 
-/* The single centred column every section sits inside: 1280px with generous
-   outer gutters that step up to the 64px the design calls for on wide screens. */
 @utility container-page {
   margin-inline: auto;
   width: 100%;
-  max-width: 80rem;
+  max-width: var(--page-max-width);
   padding-inline: 1.5rem;
 
   @media (width >= 40rem) {
@@ -190,65 +162,63 @@
   }
 }
 
-/* Editorial section rhythm — 96px, opening out to 120px on wide screens. */
 @utility section-y {
-  padding-block: 4.5rem;
+  padding-block: 3rem;
 
   @media (width >= 40rem) {
-    padding-block: 6rem;
+    padding-block: 4rem;
   }
 
   @media (width >= 64rem) {
-    padding-block: 7.5rem;
+    padding-block: 5rem;
   }
 }
 
-/* Display type: Inter 300 standing in for Waldenburg. */
-@utility display-type {
-  font-family: var(--font-display);
-  font-weight: 300;
+/* Display headlines — Hedvig Letters Serif only at ≥22px. */
+@utility serif-type {
+  font-family: var(--font-serif);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+/* Small caps section labels in Inter. */
+@utility label-caps {
+  font-family: var(--font-sans);
+  font-size: 10px;
+  line-height: 1.2;
   letter-spacing: -0.02em;
-  font-feature-settings: "ss01" on;
-}
-
-/* Technical micro-copy — used sparingly for labels and metadata. */
-@utility label-mono {
-  font-family: var(--font-mono);
-  font-size: 12px;
-  line-height: 1.69;
-  letter-spacing: 0.04em;
+  font-weight: 500;
   text-transform: uppercase;
-  color: var(--color-smoke);
+  color: var(--color-slate);
 }
 
-/* Long-form legal and editorial copy. */
 @utility prose-doc {
   max-width: 68ch;
-  color: var(--color-smoke);
+  color: var(--color-slate);
 
   & p {
     margin-block: 1rem;
     font-size: 16px;
-    line-height: 1.6;
-    color: var(--color-smoke);
+    line-height: 1.5;
+    color: var(--color-slate);
   }
 
   & h2 {
     margin-block: 2.5rem 0.75rem;
-    font-family: var(--font-display);
-    font-size: 24px;
-    font-weight: 300;
-    line-height: 1.2;
-    letter-spacing: -0.02em;
-    color: var(--color-ink);
+    font-family: var(--font-serif);
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+    color: var(--color-deep-ink);
   }
 
   & h3 {
     margin-block: 1.75rem 0.5rem;
     font-size: 18px;
-    font-weight: 500;
+    font-weight: 600;
     line-height: 1.4;
-    color: var(--color-ink);
+    color: var(--color-deep-ink);
   }
 
   & ul {
@@ -259,26 +229,26 @@
 
   & li {
     margin-block: 0.4rem;
-    line-height: 1.6;
-    color: var(--color-smoke);
+    line-height: 1.5;
+    color: var(--color-slate);
     &::marker {
-      color: var(--color-ash);
+      color: var(--color-slate);
     }
   }
 
   & strong {
-    font-weight: 500;
-    color: var(--color-ink);
+    font-weight: 600;
+    color: var(--color-deep-ink);
   }
 
   & a {
-    color: var(--color-sandstone-deep);
+    color: var(--color-deep-ink);
     text-decoration: underline;
     text-underline-offset: 0.2em;
-    text-decoration-color: var(--color-sandstone-line);
+    text-decoration-color: rgb(19 14 48 / 0.25);
   }
 
   & a:hover {
-    text-decoration-color: var(--color-sandstone-deep);
+    text-decoration-color: var(--color-deep-ink);
   }
 }

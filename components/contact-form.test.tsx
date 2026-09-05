@@ -75,17 +75,25 @@ describe("ContactForm", () => {
     respond({
       status: "error",
       message: "Please correct the highlighted fields.",
-      fieldErrors: { name: "Please enter your name.", email: "Please enter a valid email." },
+      fieldErrors: {
+        name: "Please enter your name.",
+        email: "Please enter a valid email.",
+      },
     });
     setup();
     await submit();
 
-    expect(await screen.findByRole("alert")).toHaveTextContent(/correct the highlighted/i);
+    expect(await screen.findByRole("alert")).toHaveTextContent(
+      /correct the highlighted/i,
+    );
 
     const name = screen.getByLabelText("Name");
     expect(name).toHaveAttribute("aria-invalid", "true");
     expect(name).toHaveAttribute("aria-describedby", "name-error");
-    expect(screen.getByText("Please enter your name.")).toHaveAttribute("id", "name-error");
+    expect(screen.getByText("Please enter your name.")).toHaveAttribute(
+      "id",
+      "name-error",
+    );
   });
 
   it("marks only the fields that failed", async () => {
@@ -106,7 +114,7 @@ describe("ContactForm", () => {
 
     await screen.findByText("Required.");
     expect(screen.getByLabelText("Name")).toHaveClass("border-alert");
-    expect(screen.getByLabelText("Email")).toHaveClass("border-stone");
+    expect(screen.getByLabelText("Email")).toHaveClass("border-onyx");
   });
 
   it("omits the alert banner when the error carries no summary message", async () => {

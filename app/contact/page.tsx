@@ -30,10 +30,10 @@ function ChannelRow({
 }) {
   const body = (
     <>
-      <ChannelIcon className="mt-0.5 size-4 shrink-0 text-ash" aria-hidden="true" />
+      <ChannelIcon className="mt-0.5 size-4 shrink-0 text-slate" aria-hidden="true" />
       <span className="flex flex-col gap-0.5">
-        <span className="text-body-sm font-medium text-ink">{label}</span>
-        <span className="text-body-sm text-smoke">{value}</span>
+        <span className="text-body-sm font-medium text-deep-ink">{label}</span>
+        <span className="text-body-sm text-slate">{value}</span>
       </span>
     </>
   );
@@ -43,7 +43,7 @@ function ChannelRow({
   }
 
   return (
-    <li className="border-b border-stone last:border-0">
+    <li className="border-b border-border last:border-0">
       <a
         href={href}
         {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
@@ -72,8 +72,12 @@ export default async function ContactPage() {
       <Section>
         <div className="grid gap-12 lg:grid-cols-[1.3fr_1fr] lg:gap-20">
           <div>
-            <h2 className="display-type text-heading-xs text-ink">Send us a message</h2>
-            <p className="mt-2 text-body-sm text-smoke">We reply within one working day.</p>
+            <h2 className="serif-type text-heading-sm text-deep-ink">
+              Send us a message
+            </h2>
+            <p className="mt-2 text-body-sm text-slate">
+              We reply within one working day.
+            </p>
             <div className="mt-8">
               <ContactForm consentText={consentText} />
             </div>
@@ -81,7 +85,7 @@ export default async function ContactPage() {
 
           <div className="flex flex-col gap-5">
             <Card className="flex flex-col gap-2">
-              <h2 className="label-mono">Reach us directly</h2>
+              <h2 className="label-caps">Reach us directly</h2>
               <ul className="flex flex-col">
                 <ChannelRow
                   icon={MessageCircle}
@@ -112,18 +116,21 @@ export default async function ContactPage() {
 
             {site.offices.map((office) => (
               <Card key={office.id} className="flex flex-col gap-3">
-                <h2 className="label-mono">{office.label}</h2>
+                <h2 className="label-caps">{office.label}</h2>
                 {office.phoneDisplay ? (
                   <a
                     href={`tel:${office.phoneE164}`}
-                    className="flex items-center gap-2 text-body-sm text-smoke transition-colors hover:text-ink"
+                    className="flex items-center gap-2 text-body-sm text-slate transition-colors hover:text-deep-ink"
                   >
-                    <Phone className="size-3.5 shrink-0 text-ash" aria-hidden="true" />
+                    <Phone className="size-3.5 shrink-0 text-slate" aria-hidden="true" />
                     {office.phoneDisplay}
                   </a>
                 ) : null}
-                <address className="flex items-start gap-3 text-body-sm not-italic text-smoke">
-                  <MapPin className="mt-1 size-3.5 shrink-0 text-ash" aria-hidden="true" />
+                <address className="flex items-start gap-3 text-body-sm text-slate not-italic">
+                  <MapPin
+                    className="mt-1 size-3.5 shrink-0 text-slate"
+                    aria-hidden="true"
+                  />
                   <span>
                     {office.addressLines.map((line) => (
                       <span key={line} className="block">
@@ -140,7 +147,7 @@ export default async function ContactPage() {
                     href={office.mapUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-fit text-body-sm font-medium text-sandstone-deep underline decoration-sandstone-line underline-offset-4 hover:decoration-sandstone-deep"
+                    className="w-fit text-body-sm font-medium text-deep-ink underline decoration-deep-ink/25 underline-offset-4 hover:decoration-deep-ink"
                   >
                     View on map
                   </a>

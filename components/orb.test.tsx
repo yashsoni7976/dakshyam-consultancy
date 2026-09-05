@@ -1,73 +1,46 @@
 import { render } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
-import { Orb, OrbCluster } from "./orb";
+import { HeroVisual, Orb, OrbCluster } from "./orb";
 
-/**
- * Lighter logo blues are permitted here and nowhere else in the system. Match
- * the channels only: jsdom normalises hex to spaced `rgb()`, and each recipe
- * uses the sparks at whatever alpha suits it.
- */
-const NAVY = "0, 42, 82";
-const SKY = "23, 141, 205";
-
-describe("Orb", () => {
+describe("HeroVisual", () => {
   it("is decorative, so the whole thing is hidden from assistive technology", () => {
-    const { container } = render(<Orb />);
+    const { container } = render(<HeroVisual />);
     expect(container.firstChild).toHaveAttribute("aria-hidden", "true");
   });
 
-  it("is not interactive", () => {
-    const { container } = render(<Orb />);
-    expect(container.firstChild).toHaveClass("pointer-events-none", "aspect-square");
+  it("renders organic blob shapes in the decorative palette", () => {
+    const { container } = render(<HeroVisual />);
+    const fills = [...container.querySelectorAll("path")].map((path) =>
+      path.getAttribute("fill"),
+    );
+    expect(fills).toContain("#59e25d");
+    expect(fills).toContain("#e261e5");
+    expect(fills).toContain("#ffe228");
+    expect(fills).toContain("#130e30");
   });
 
-  it.each(["sandstone", "ember", "dusk"] as const)("paints the %s recipe", (variant) => {
-    const { container } = render(<Orb variant={variant} />);
-    const sphere = container.querySelectorAll("div > div")[1] as HTMLElement;
-    expect(sphere.style.background).toContain("radial-gradient");
-  });
-
-  it("defaults to the sandstone recipe", () => {
-    const { container: a } = render(<Orb />);
-    const { container: b } = render(<Orb variant="sandstone" />);
-    const styleOf = (root: HTMLElement) =>
-      (root.querySelectorAll("div > div")[1] as HTMLElement).style.background;
-    expect(styleOf(a as HTMLElement)).toBe(styleOf(b as HTMLElement));
-  });
-
-  it("keeps a navy note in the shadow so the artwork is not monotone", () => {
-    const { container } = render(<Orb variant="sandstone" />);
-    expect(container.innerHTML).toContain(NAVY);
-  });
-
-  it("renders the sky blue spark at full saturation, as only artwork may", () => {
-    const { container } = render(<Orb variant="ember" />);
-    expect(container.innerHTML).toContain(SKY);
-  });
-
-  it("drops the halo layer when blur is off", () => {
-    const withBlur = render(<Orb />).container.querySelectorAll("div > div");
-    const withoutBlur = render(<Orb blur={false} />).container.querySelectorAll("div > div");
-    expect(withoutBlur.length).toBe(withBlur.length - 1);
+  it("floats a white product card above the blobs", () => {
+    const { container } = render(<HeroVisual />);
+    expect(container.querySelector(".bg-white")).toBeInTheDocument();
   });
 
   it("accepts sizing classes from the caller", () => {
-    const { container } = render(<Orb className="w-32" />);
-    expect(container.firstChild).toHaveClass("w-32");
+    const { container } = render(<HeroVisual className="max-w-md" />);
+    expect(container.firstChild).toHaveClass("max-w-md");
   });
 });
 
 describe("OrbCluster", () => {
-  it("renders three spheres at unequal sizes", () => {
+  it("delegates to HeroVisual", () => {
     const { container } = render(<OrbCluster />);
-    const orbs = container.querySelectorAll("[aria-hidden='true'].aspect-square");
-    expect(orbs).toHaveLength(3);
-    const widths = [...orbs].map((orb) => orb.className.match(/w-\d+/)?.[0]);
-    expect(new Set(widths).size).toBe(3);
+    expect(container.firstChild).toHaveAttribute("aria-hidden", "true");
+    expect(container.querySelector(".bg-white")).toBeInTheDocument();
   });
+});
 
-  it("hides the whole composition from assistive technology", () => {
-    const { container } = render(<OrbCluster />);
+describe("Orb", () => {
+  it("delegates to HeroVisual for backward compatibility", () => {
+    const { container } = render(<Orb />);
     expect(container.firstChild).toHaveAttribute("aria-hidden", "true");
   });
 });

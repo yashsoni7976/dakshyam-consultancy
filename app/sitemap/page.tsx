@@ -1,7 +1,7 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { PageHero, Section } from "@/components/ui";
-import { getBlogPosts, getNavigation, getSchemes } from "@/lib/content";
+import { getNavigation, getSchemes } from "@/lib/content";
 import { buildMetadata } from "@/lib/seo";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -22,13 +22,13 @@ function LinkList({
   if (links.length === 0) return null;
   return (
     <div className="flex flex-col gap-4">
-      <h2 className="label-mono">{title}</h2>
+      <h2 className="label-caps">{title}</h2>
       <ul className="flex flex-col">
         {links.map((link) => (
-          <li key={link.href} className="border-b border-stone">
+          <li key={link.href} className="border-b border-border">
             <Link
               href={link.href}
-              className="block py-2.5 text-body-sm text-smoke transition-colors hover:text-ink"
+              className="block py-2.5 text-body-sm text-slate transition-colors hover:text-deep-ink"
             >
               {link.label}
             </Link>
@@ -40,11 +40,7 @@ function LinkList({
 }
 
 export default async function HtmlSitemapPage() {
-  const [nav, schemes, posts] = await Promise.all([
-    getNavigation(),
-    getSchemes(),
-    getBlogPosts(),
-  ]);
+  const [nav, schemes] = await Promise.all([getNavigation(), getSchemes()]);
 
   const legalGroup = nav.footer.find((group) => group.id === "legal");
 
@@ -67,6 +63,7 @@ export default async function HtmlSitemapPage() {
               href: `/schemes/${scheme.slug}`,
             }))}
           />
+          {/* Blog temporarily disabled
           <LinkList
             title="Articles"
             links={posts.map((post) => ({
@@ -74,6 +71,7 @@ export default async function HtmlSitemapPage() {
               href: `/blog/${post.slug}`,
             }))}
           />
+          */}
         </div>
       </Section>
     </>

@@ -1,5 +1,15 @@
+import { notFound } from "next/navigation";
+
+/** Work showcase temporarily disabled — uncomment the implementation below to restore. */
+export const instant = false;
+
+export default function WorkShowcasePage() {
+  notFound();
+}
+
+/*
 import type { Metadata } from "next";
-import { Orb } from "@/components/orb";
+import { HeroVisual } from "@/components/orb";
 import {
   CtaBanner,
   EmptyState,
@@ -29,7 +39,7 @@ export default async function WorkShowcasePage() {
         eyebrow="Work showcase"
         title="Unlocking growth. Securing subsidies."
         description="We bridge the gap between ambitious businesses and government support — from initial documentation through to final disbursement."
-        aside={<Orb variant="ember" className="w-24 sm:w-32" />}
+        aside={<HeroVisual className="max-w-xs" />}
       />
 
       <Section>
@@ -53,34 +63,34 @@ export default async function WorkShowcasePage() {
                   Subsidy and finance claims delivered, by client and scheme
                 </caption>
                 <thead>
-                  <tr className="border-y border-stone text-left">
-                    <th scope="col" className="label-mono py-3 pr-4">
+                  <tr className="border-y border-border text-left">
+                    <th scope="col" className="label-caps py-3 pr-4">
                       Client
                     </th>
-                    <th scope="col" className="label-mono px-4 py-3">
+                    <th scope="col" className="label-caps px-4 py-3">
                       Scheme
                     </th>
-                    <th scope="col" className="label-mono px-4 py-3">
+                    <th scope="col" className="label-caps px-4 py-3">
                       Sector
                     </th>
-                    <th scope="col" className="label-mono px-4 py-3">
+                    <th scope="col" className="label-caps px-4 py-3">
                       Location
                     </th>
-                    <th scope="col" className="label-mono py-3 pl-4 text-right">
+                    <th scope="col" className="label-caps py-3 pl-4 text-right">
                       Deliverable
                     </th>
                   </tr>
                 </thead>
                 <tbody>
                   {stories.map((story) => (
-                    <tr key={story.slug} className="border-b border-stone">
-                      <th scope="row" className="py-4 pr-4 text-left font-medium text-ink">
+                    <tr key={story.slug} className="border-b border-border">
+                      <th scope="row" className="py-4 pr-4 text-left font-medium text-deep-ink">
                         {story.clientName}
                       </th>
-                      <td className="px-4 py-4 text-smoke">{story.schemeCode}</td>
-                      <td className="px-4 py-4 text-smoke">{story.sector ?? "—"}</td>
-                      <td className="px-4 py-4 text-smoke">{story.location ?? "—"}</td>
-                      <td className="py-4 pl-4 text-right font-medium text-ink tabular-nums">
+                      <td className="px-4 py-4 text-slate">{story.schemeCode}</td>
+                      <td className="px-4 py-4 text-slate">{story.sector ?? "—"}</td>
+                      <td className="px-4 py-4 text-slate">{story.location ?? "—"}</td>
+                      <td className="py-4 pl-4 text-right font-medium text-deep-ink tabular-nums">
                         {formatInr(story.amountInr)}
                       </td>
                     </tr>
@@ -92,7 +102,7 @@ export default async function WorkShowcasePage() {
         </div>
       </Section>
 
-      <Section tone="taupe" divider>
+      <Section tone="meadow" divider>
         <SectionHeading
           eyebrow="Coverage"
           title="Schemes we file against"
@@ -102,13 +112,13 @@ export default async function WorkShowcasePage() {
           {schemes.map((scheme, index) => (
             <li
               key={scheme.slug}
-              className="flex items-baseline gap-4 border-b border-stone py-3.5 text-body-sm"
+              className="flex items-baseline gap-4 border-b border-border py-3.5 text-body-sm"
             >
-              <span className="font-mono text-micro text-ash tabular-nums">
+              <span className="font-mono text-micro text-slate tabular-nums">
                 {String(index + 1).padStart(2, "0")}
               </span>
-              <span className="font-medium text-ink">{scheme.code}</span>
-              <span className="label-mono ml-auto">
+              <span className="font-medium text-deep-ink">{scheme.code}</span>
+              <span className="label-caps ml-auto">
                 {scheme.government === "central" ? "Central" : "State"}
               </span>
             </li>
@@ -124,3 +134,4 @@ export default async function WorkShowcasePage() {
     </>
   );
 }
+*/

@@ -45,7 +45,7 @@ function inline(text: string): ReactNode {
   const parts = text.split(/(\*\*[^*]+\*\*)/g);
   return parts.map((part, index) =>
     part.startsWith("**") && part.endsWith("**") ? (
-      <strong key={index} className="font-medium text-ink">
+      <strong key={index} className="font-medium text-deep-ink">
         {part.slice(2, -2)}
       </strong>
     ) : (

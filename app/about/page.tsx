@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Clock, ExternalLink, Globe2, ShieldCheck } from "lucide-react";
-import { Orb } from "@/components/orb";
+import { HeroVisual } from "@/components/orb";
 import {
   Card,
   CtaBanner,
@@ -81,34 +81,37 @@ export default async function AboutPage() {
           </div>
 
           <div className="flex flex-col gap-10">
-            <dl className="grid h-fit gap-px overflow-hidden rounded-card bg-stone sm:grid-cols-2">
+            <dl className="grid h-fit gap-5 sm:grid-cols-2">
               {home.impact.stats.slice(0, 4).map((stat) => (
-                <div key={stat.id} className="bg-taupe p-6">
-                  <dd className="display-type break-words text-heading-xs text-ink tabular-nums">
+                <div key={stat.id} className="rounded-card bg-soft-meadow p-6">
+                  <dd className="serif-type text-heading-sm break-words text-deep-ink tabular-nums">
                     {stat.value}
                   </dd>
-                  <dt className="mt-2 text-body-sm text-smoke">{stat.label}</dt>
+                  <dt className="mt-2 text-body-sm text-slate">{stat.label}</dt>
                 </div>
               ))}
             </dl>
-            <Orb variant="dusk" className="mt-6 w-24 self-end sm:w-32" />
+            <HeroVisual className="mt-6 max-w-xs self-end" />
           </div>
         </div>
       </Section>
 
-      <Section tone="taupe" divider>
+      <Section tone="meadow" divider>
         <SectionHeading
           eyebrow="How we operate"
           title="Three things we do not compromise on"
         />
-        <ul className="mt-12 grid gap-px overflow-hidden rounded-card bg-stone md:grid-cols-3">
+        <ul className="mt-12 grid gap-5 md:grid-cols-3">
           {PRINCIPLES.map(({ icon: PrincipleIcon, title, body }) => (
-            <li key={title} className="flex flex-col gap-5 bg-taupe p-6 sm:p-8">
+            <li
+              key={title}
+              className="flex flex-col gap-5 rounded-card bg-soft-meadow p-6 sm:p-8"
+            >
               <IconPlate>
                 <PrincipleIcon className="size-5" aria-hidden="true" />
               </IconPlate>
-              <h3 className="text-subheading font-medium text-ink">{title}</h3>
-              <p className="text-body-sm text-smoke">{body}</p>
+              <h3 className="text-subheading font-medium text-deep-ink">{title}</h3>
+              <p className="text-body-sm text-slate">{body}</p>
             </li>
           ))}
         </ul>
@@ -132,17 +135,19 @@ export default async function AboutPage() {
                     className="aspect-[4/3] w-full rounded-card object-cover object-top"
                   />
                 ) : null}
-                <h3 className="display-type text-heading-xs text-ink">{member.name}</h3>
-                <p className="label-mono">{member.role}</p>
+                <h3 className="serif-type text-heading-sm text-deep-ink">
+                  {member.name}
+                </h3>
+                <p className="label-caps">{member.role}</p>
                 {member.bio ? (
-                  <p className="pt-2 text-body-sm text-smoke">{member.bio}</p>
+                  <p className="pt-2 text-body-sm text-slate">{member.bio}</p>
                 ) : null}
                 {member.linkedinUrl ? (
                   <a
                     href={member.linkedinUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="mt-auto inline-flex w-fit items-center gap-1.5 pt-5 text-body-sm text-smoke transition-colors hover:text-ink"
+                    className="mt-auto inline-flex w-fit items-center gap-1.5 pt-5 text-body-sm text-slate transition-colors hover:text-deep-ink"
                   >
                     LinkedIn
                     <ExternalLink className="size-3.5" aria-hidden="true" />

@@ -1,3 +1,11 @@
+/**
+ * Archived blog post page — restore as `app/blog/[slug]/page.tsx` when re-enabling.
+ */
+
+export {};
+
+/* Full implementation:
+
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
@@ -36,23 +44,23 @@ export default async function BlogPostPage(props: PageProps<"/blog/[slug]">) {
 
   return (
     <>
-      <div className="border-b border-stone">
+      <div className="border-b border-border">
         <div className="container-page pb-16 pt-10 sm:pb-20 sm:pt-12">
           <Link
             href="/blog"
-            className="inline-flex items-center gap-1.5 text-body-sm text-smoke transition-colors hover:text-ink"
+            className="inline-flex items-center gap-1.5 text-body-sm text-slate transition-colors hover:text-deep-ink"
           >
             <ArrowLeft className="size-3.5" aria-hidden="true" />
             All articles
           </Link>
           <div className="mt-10 flex max-w-3xl flex-col gap-5">
-            <time dateTime={post.publishedAt} className="label-mono">
+            <time dateTime={post.publishedAt} className="label-caps">
               {formatDate(post.publishedAt)} · {post.author}
             </time>
-            <h1 className="display-type text-heading text-ink sm:text-display">
+            <h1 className="serif-type text-heading text-deep-ink sm:text-display">
               {post.title}
             </h1>
-            <p className="text-body-lg text-smoke">{post.excerpt}</p>
+            <p className="text-subheading text-slate">{post.excerpt}</p>
           </div>
         </div>
       </div>
@@ -71,3 +79,5 @@ export default async function BlogPostPage(props: PageProps<"/blog/[slug]">) {
     </>
   );
 }
+
+*/

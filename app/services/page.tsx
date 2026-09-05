@@ -33,25 +33,28 @@ function ServiceGrid({
 }: {
   services: Service[];
   /** Which band the grid sits on, so the tile fill matches it. */
-  surface: "canvas" | "taupe";
+  surface: "canvas" | "meadow";
 }) {
-  const tile = surface === "taupe" ? "bg-taupe" : "bg-eggshell";
+  const tile = surface === "meadow" ? "bg-soft-meadow" : "bg-canvas";
 
   return (
-    <ul className="mt-12 grid gap-px overflow-hidden rounded-card bg-stone sm:grid-cols-2 lg:grid-cols-3">
+    <ul className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
       {services.map((service) => (
-        <li key={service.slug} className={`flex flex-col gap-5 p-6 sm:p-8 ${tile}`}>
+        <li
+          key={service.slug}
+          className={`flex flex-col gap-5 rounded-card p-6 sm:p-8 ${tile}`}
+        >
           <IconPlate>
             <Icon name={service.icon} />
           </IconPlate>
-          <h3 className="text-subheading font-medium text-ink">{service.title}</h3>
-          <p className="text-body-sm text-smoke">{service.description}</p>
+          <h3 className="text-subheading font-medium text-deep-ink">{service.title}</h3>
+          <p className="text-body-sm text-slate">{service.description}</p>
           <a
             href={service.externalUrl ?? "/contact"}
             {...(service.externalUrl
               ? { target: "_blank", rel: "noopener noreferrer" }
               : {})}
-            className="mt-auto inline-flex w-fit items-center gap-1.5 pt-4 text-body-sm font-medium text-sandstone-deep underline decoration-sandstone-line underline-offset-4 hover:decoration-sandstone-deep"
+            className="mt-auto inline-flex w-fit items-center gap-1.5 pt-4 text-body-sm font-medium text-deep-ink underline decoration-deep-ink/25 underline-offset-4 hover:decoration-deep-ink"
           >
             Get started
             <ArrowUpRight className="size-3.5" aria-hidden="true" />
@@ -74,7 +77,7 @@ export default async function ServicesPage() {
         title="Everything between an idea and a disbursement"
         description="Subsidy liaising, project reports, debt syndication and the statutory work that has to sit underneath all of it."
       >
-        <div className="flex flex-wrap gap-3">
+        <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
           <ButtonLink href="/contact">Schedule a free consultation</ButtonLink>
           <ButtonLink href="/schemes" variant="secondary">
             See which schemes you qualify for
@@ -91,13 +94,13 @@ export default async function ServicesPage() {
         <ServiceGrid services={advisory} surface="canvas" />
       </Section>
 
-      <Section tone="taupe" divider>
+      <Section tone="meadow" divider>
         <SectionHeading
           eyebrow="Compliance"
           title="Registrations and statutory work"
           description="A subsidy claim only survives if the entity behind it is clean. These keep it that way."
         />
-        <ServiceGrid services={compliance} surface="taupe" />
+        <ServiceGrid services={compliance} surface="meadow" />
       </Section>
 
       <CtaBanner

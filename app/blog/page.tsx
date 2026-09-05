@@ -1,3 +1,13 @@
+import { notFound } from "next/navigation";
+
+/** Blog index temporarily disabled — uncomment the implementation below to restore. */
+export const instant = false;
+
+export default function BlogIndexPage() {
+  notFound();
+}
+
+/*
 import Link from "next/link";
 import type { Metadata } from "next";
 import { CtaBanner, EmptyState, PageHero, Section, Tag } from "@/components/ui";
@@ -33,22 +43,21 @@ export default async function BlogIndexPage() {
             action={{ label: "Browse schemes", href: "/schemes" }}
           />
         ) : (
-          /* An index reads better as a ruled list than as a grid of cards. */
-          <ul className="border-t border-stone">
+          <ul className="border-t border-border">
             {posts.map((post) => (
-              <li key={post.slug} className="border-b border-stone">
+              <li key={post.slug} className="border-b border-border">
                 <Link
                   href={`/blog/${post.slug}`}
                   className="group grid gap-4 py-8 transition-colors lg:grid-cols-[10rem_1fr_auto] lg:items-baseline lg:gap-10"
                 >
-                  <time dateTime={post.publishedAt} className="label-mono">
+                  <time dateTime={post.publishedAt} className="label-caps">
                     {formatDate(post.publishedAt)}
                   </time>
                   <div className="flex flex-col gap-3">
-                    <h2 className="display-type text-heading-xs text-ink underline decoration-transparent underline-offset-4 transition-colors group-hover:decoration-sandstone-line">
+                    <h2 className="serif-type text-heading-sm text-deep-ink underline decoration-transparent underline-offset-4 transition-colors group-hover:decoration-deep-ink/25">
                       {post.title}
                     </h2>
-                    <p className="max-w-2xl text-body-sm text-smoke">{post.excerpt}</p>
+                    <p className="max-w-2xl text-body-sm text-slate">{post.excerpt}</p>
                   </div>
                   {post.tags.length > 0 ? (
                     <ul className="flex flex-wrap gap-2">
@@ -74,3 +83,4 @@ export default async function BlogIndexPage() {
     </>
   );
 }
+*/

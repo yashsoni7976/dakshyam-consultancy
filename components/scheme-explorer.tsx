@@ -58,15 +58,15 @@ export function SchemeExplorer({
   return (
     <div className="flex flex-col gap-10">
       {/* Controls */}
-      <div className="flex flex-col gap-5 rounded-card bg-taupe p-6 sm:p-8">
+      <div className="flex flex-col gap-5 rounded-card bg-soft-meadow p-6 sm:p-8">
         <div className="flex flex-col gap-5 sm:flex-row sm:items-end">
           <div className="flex-1">
-            <label htmlFor="scheme-search" className="label-mono">
+            <label htmlFor="scheme-search" className="label-caps">
               Search
             </label>
             <div className="relative mt-2">
               <Search
-                className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-ash"
+                className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-slate"
                 aria-hidden="true"
               />
               <input
@@ -75,20 +75,20 @@ export function SchemeExplorer({
                 value={query}
                 onChange={(event) => setQuery(event.target.value)}
                 placeholder="Scheme name, benefit or sector"
-                className="w-full rounded-input border border-stone bg-taupe py-2.5 pl-9 pr-3 text-body-sm text-ink outline-none placeholder:text-ash focus:border-sandstone-deep"
+                className="w-full rounded-full border border-onyx bg-white py-2.5 pr-3 pl-9 text-body-sm text-deep-ink outline-none placeholder:text-slate focus:border-deep-ink"
               />
             </div>
           </div>
 
           <div className="sm:w-60">
-            <label htmlFor="scheme-sector" className="label-mono">
+            <label htmlFor="scheme-sector" className="label-caps">
               Sector
             </label>
             <select
               id="scheme-sector"
               value={sector}
               onChange={(event) => setSector(event.target.value)}
-              className="mt-2 w-full rounded-input border border-stone bg-taupe px-3 py-2.5 text-body-sm text-ink outline-none focus:border-sandstone-deep"
+              className="mt-2 w-full rounded-full border border-onyx bg-white px-3 py-2.5 text-body-sm text-deep-ink outline-none focus:border-deep-ink"
             >
               <option value="all">All sectors</option>
               {sectors.map((name) => (
@@ -101,7 +101,11 @@ export function SchemeExplorer({
         </div>
 
         {/* Tab pills — the active one takes the ink fill. */}
-        <div role="group" aria-label="Filter by government" className="flex flex-wrap gap-2">
+        <div
+          role="group"
+          aria-label="Filter by government"
+          className="flex flex-col gap-2 sm:flex-row sm:flex-wrap"
+        >
           {GOVERNMENT_OPTIONS.map((option) => (
             <button
               key={option.value}
@@ -109,10 +113,10 @@ export function SchemeExplorer({
               aria-pressed={government === option.value}
               onClick={() => setGovernment(option.value)}
               className={cx(
-                "rounded-full border px-4 py-2 text-body-sm font-medium transition-colors",
+                "w-full rounded-full border px-4 py-2 text-body-sm font-medium transition-colors sm:w-auto",
                 government === option.value
-                  ? "border-sandstone-line bg-sandstone-wash text-sandstone-deep"
-                  : "border-hairline bg-eggshell text-smoke hover:text-ink",
+                  ? "border-brand/20 bg-brand text-white"
+                  : "border-border bg-canvas text-slate hover:text-deep-ink",
               )}
             >
               {option.label}
@@ -122,16 +126,17 @@ export function SchemeExplorer({
       </div>
 
       {/* Result count */}
-      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-stone pb-4">
-        <p aria-live="polite" className="text-body-sm text-smoke">
-          Showing <span className="font-medium text-ink tabular-nums">{visible.length}</span>{" "}
+      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border pb-4">
+        <p aria-live="polite" className="text-body-sm text-slate">
+          Showing{" "}
+          <span className="font-medium text-deep-ink tabular-nums">{visible.length}</span>{" "}
           of {schemes.length} schemes
         </p>
         {visible.length !== schemes.length ? (
           <button
             type="button"
             onClick={reset}
-            className="text-body-sm font-medium text-sandstone-deep underline decoration-sandstone-line underline-offset-4 hover:decoration-sandstone-deep"
+            className="text-body-sm font-medium text-deep-ink underline decoration-deep-ink/25 underline-offset-4 hover:decoration-deep-ink"
           >
             Clear filters
           </button>
@@ -140,13 +145,16 @@ export function SchemeExplorer({
 
       {/* Results */}
       {visible.length === 0 ? (
-        <div className="rounded-card bg-taupe px-6 py-20 text-center">
-          <h3 className="display-type text-heading-xs text-ink">
+        <div className="rounded-card bg-soft-meadow px-6 py-20 text-center">
+          <h3 className="serif-type text-heading-sm text-deep-ink">
             No scheme matches those filters
           </h3>
-          <p className="mx-auto mt-3 max-w-md text-body-sm text-smoke">
+          <p className="mx-auto mt-3 max-w-md text-body-sm text-slate">
             Try widening the sector, or{" "}
-            <Link href="/contact" className="text-sandstone-deep underline decoration-sandstone-line underline-offset-4">
+            <Link
+              href="/contact"
+              className="text-deep-ink underline decoration-deep-ink/25 underline-offset-4"
+            >
               describe your project to us
             </Link>{" "}
             — eligibility often depends on details a filter cannot capture.
@@ -156,27 +164,27 @@ export function SchemeExplorer({
         <ul className="flex flex-col gap-5">
           {visible.map((scheme) => (
             <li key={scheme.slug}>
-              <article className="flex flex-col gap-5 rounded-card bg-taupe p-6 sm:p-8">
+              <article className="flex flex-col gap-5 rounded-card bg-soft-meadow p-6 sm:p-8">
                 <div className="flex flex-col gap-3">
                   <Badge tone={scheme.government === "central" ? "central" : "state"}>
                     {scheme.government === "central"
                       ? "Central Government"
                       : "State Government"}
                   </Badge>
-                  <h2 className="display-type text-heading-xs text-ink">
+                  <h2 className="serif-type text-heading-sm text-deep-ink">
                     <Link
                       href={`/schemes/${scheme.slug}`}
-                      className="underline decoration-transparent underline-offset-4 transition-colors hover:decoration-sandstone-line"
+                      className="underline decoration-transparent underline-offset-4 transition-colors hover:decoration-deep-ink/25"
                     >
                       {scheme.code}
                     </Link>
                   </h2>
-                  <p className="text-body-sm text-smoke">{scheme.name}</p>
+                  <p className="text-body-sm text-slate">{scheme.name}</p>
                 </div>
 
-                <p className="max-w-3xl text-body text-smoke">{scheme.summary}</p>
+                <p className="max-w-3xl text-body text-slate">{scheme.summary}</p>
 
-                <p className="max-w-3xl rounded-input border-l-2 border-sandstone-deep bg-eggshell px-4 py-3 text-body-sm font-medium text-ink">
+                <p className="max-w-3xl rounded-card border-l-2 border-deep-ink bg-canvas px-4 py-3 text-body-sm font-medium text-deep-ink">
                   {scheme.keyAdvantage}
                 </p>
 
@@ -188,10 +196,10 @@ export function SchemeExplorer({
                   ))}
                 </ul>
 
-                <div className="flex flex-wrap items-center gap-x-6 gap-y-3 border-t border-stone pt-5">
+                <div className="flex flex-wrap items-center gap-x-6 gap-y-3 border-t border-border pt-5">
                   <Link
                     href={`/schemes/${scheme.slug}`}
-                    className="inline-flex items-center gap-1.5 text-body-sm font-medium text-sandstone-deep underline decoration-sandstone-line underline-offset-4 hover:decoration-sandstone-deep"
+                    className="inline-flex items-center gap-1.5 text-body-sm font-medium text-deep-ink underline decoration-deep-ink/25 underline-offset-4 hover:decoration-deep-ink"
                   >
                     Eligibility &amp; benefits
                     <ArrowUpRight className="size-3.5" aria-hidden="true" />
@@ -202,12 +210,14 @@ export function SchemeExplorer({
                       href={doc.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1.5 text-body-sm text-smoke transition-colors hover:text-ink"
+                      className="inline-flex items-center gap-1.5 text-body-sm text-slate transition-colors hover:text-deep-ink"
                     >
                       <FileDown className="size-3.5" aria-hidden="true" />
                       {doc.label}
                       {doc.sizeBytes ? (
-                        <span className="text-smoke">({formatBytes(doc.sizeBytes)} PDF)</span>
+                        <span className="text-slate">
+                          ({formatBytes(doc.sizeBytes)} PDF)
+                        </span>
                       ) : null}
                     </a>
                   ))}

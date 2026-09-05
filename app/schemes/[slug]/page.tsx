@@ -30,13 +30,13 @@ export async function generateMetadata(
 function DetailList({ title, items }: { title: string; items: string[] }) {
   if (items.length === 0) return null;
   return (
-    <div className="flex flex-col gap-5 bg-taupe p-6 sm:p-8">
-      <h2 className="label-mono">{title}</h2>
+    <div className="flex flex-col gap-5 rounded-card bg-soft-meadow p-6 sm:p-8">
+      <h2 className="label-caps">{title}</h2>
       <ul className="flex flex-col gap-3">
         {items.map((item) => (
           <li key={item} className="flex items-start gap-3 text-body-sm">
-            <Check className="mt-0.5 size-4 shrink-0 text-ink" aria-hidden="true" />
-            <span className="text-smoke">{item}</span>
+            <Check className="mt-0.5 size-4 shrink-0 text-deep-ink" aria-hidden="true" />
+            <span className="text-slate">{item}</span>
           </li>
         ))}
       </ul>
@@ -52,11 +52,11 @@ export default async function SchemePage(props: PageProps<"/schemes/[slug]">) {
 
   return (
     <>
-      <div className="border-b border-stone">
-        <div className="container-page pb-16 pt-10 sm:pb-20 sm:pt-12">
+      <div className="border-b border-border">
+        <div className="container-page pt-10 pb-16 sm:pt-12 sm:pb-20">
           <Link
             href="/schemes"
-            className="inline-flex items-center gap-1.5 text-body-sm text-smoke transition-colors hover:text-ink"
+            className="inline-flex items-center gap-1.5 text-body-sm text-slate transition-colors hover:text-deep-ink"
           >
             <ArrowLeft className="size-3.5" aria-hidden="true" />
             All schemes
@@ -69,15 +69,15 @@ export default async function SchemePage(props: PageProps<"/schemes/[slug]">) {
                   ? "Central Government"
                   : "State Government"}
               </Badge>
-              <h1 className="display-type text-heading text-ink sm:text-display">
+              <h1 className="serif-type text-heading text-deep-ink sm:text-display">
                 {scheme.code}
               </h1>
-              <p className="text-body-lg text-smoke">{scheme.name}</p>
+              <p className="text-subheading text-slate">{scheme.name}</p>
             </div>
 
             <div className="flex flex-col gap-6">
-              <p className="text-body text-smoke">{scheme.summary}</p>
-              <p className="rounded-input border-l-2 border-sandstone-deep bg-taupe px-4 py-3 text-body-sm font-medium text-ink">
+              <p className="text-body text-slate">{scheme.summary}</p>
+              <p className="rounded-card border-l-2 border-deep-ink bg-soft-meadow px-4 py-3 text-body-sm font-medium text-deep-ink">
                 {scheme.keyAdvantage}
               </p>
               <div className="flex flex-wrap gap-3">
@@ -87,7 +87,7 @@ export default async function SchemePage(props: PageProps<"/schemes/[slug]">) {
                     <FileDown className="size-3.5" aria-hidden="true" />
                     {doc.label}
                     {doc.sizeBytes ? (
-                      <span className="text-smoke">({formatBytes(doc.sizeBytes)})</span>
+                      <span className="text-slate">({formatBytes(doc.sizeBytes)})</span>
                     ) : null}
                   </ButtonLink>
                 ))}
@@ -98,14 +98,14 @@ export default async function SchemePage(props: PageProps<"/schemes/[slug]">) {
       </div>
 
       <Section>
-        <div className="grid gap-px overflow-hidden rounded-card bg-stone lg:grid-cols-3">
+        <div className="grid gap-5 lg:grid-cols-3">
           <DetailList title="Key benefits" items={scheme.benefits} />
           <DetailList title="Eligibility" items={scheme.eligibility} />
           <DetailList title="Eligible projects" items={scheme.eligibleProjects} />
         </div>
 
         <div className="mt-12 flex flex-col gap-4">
-          <h2 className="label-mono">Sectors covered</h2>
+          <h2 className="label-caps">Sectors covered</h2>
           <ul className="flex flex-wrap gap-2">
             {scheme.sectors.map((sector) => (
               <li key={sector}>
@@ -115,11 +115,11 @@ export default async function SchemePage(props: PageProps<"/schemes/[slug]">) {
           </ul>
         </div>
 
-        <p className="mt-12 max-w-3xl border-t border-stone pt-6 text-body-sm text-smoke">
-          <span className="font-medium text-ink">Please note:</span> subsidy quantums, caps
-          and eligibility criteria are set by the issuing department and change by
-          notification. The linked guideline PDF is the authoritative source — verify
-          against it before committing to an investment decision.
+        <p className="mt-12 max-w-3xl border-t border-border pt-6 text-body-sm text-slate">
+          <span className="font-medium text-deep-ink">Please note:</span> subsidy
+          quantums, caps and eligibility criteria are set by the issuing department and
+          change by notification. The linked guideline PDF is the authoritative source —
+          verify against it before committing to an investment decision.
         </p>
       </Section>
 

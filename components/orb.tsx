@@ -1,92 +1,90 @@
-import type { CSSProperties } from "react";
 import { cx } from "./ui";
 
 /**
- * The system's signature product visual: a soft-edged gradient sphere.
+ * Organic decorative blobs — the garden-meadow atmosphere behind hero visuals.
  *
- * This is the *only* place the lighter logo blues are allowed to appear at
- * full saturation. They are decoration — never a button, a link, a badge or
- * a border — so the colours live here rather than in a token any component
- * could reach for.
- *
- * Purely ornamental, so it is hidden from assistive technology.
+ * Moss green, fuchsia, hi-yellow and deep ink appear here only. They must
+ * never surface in buttons, badges, or functional UI chrome.
  */
-const RECIPES: Record<string, CSSProperties> = {
-  // Logo navy body, sky blue on the lit side, deep navy holding the shadow.
-  sandstone: {
-    background: [
-      "radial-gradient(circle at 30% 26%, rgba(232,241,249,0.95) 0%, rgba(232,241,249,0) 42%)",
-      "radial-gradient(circle at 62% 40%, rgba(23,141,205,0.75) 0%, rgba(23,141,205,0) 50%)",
-      "radial-gradient(circle at 80% 84%, rgba(0,42,82,0.7) 0%, rgba(0,42,82,0) 55%)",
-      "radial-gradient(circle at 46% 44%, #178dcd 0%, #004382 52%, #002a52 100%)",
-    ].join(", "),
-  },
-  // Sky-led: the brightest of the three, daylight on the mark.
-  ember: {
-    background: [
-      "radial-gradient(circle at 30% 24%, rgba(238,244,250,0.92) 0%, rgba(238,244,250,0) 40%)",
-      "radial-gradient(circle at 76% 80%, rgba(0,67,130,0.62) 0%, rgba(0,67,130,0) 56%)",
-      "radial-gradient(circle at 44% 60%, rgba(77,163,217,0.8) 0%, rgba(77,163,217,0) 50%)",
-      "radial-gradient(circle at 54% 36%, #4da3d9 0%, #178dcd 55%, #004382 100%)",
-    ].join(", "),
-  },
-  // Slate: the quietest — logo grey meeting navy after the highlight fades.
-  dusk: {
-    background: [
-      "radial-gradient(circle at 34% 30%, rgba(232,241,249,0.88) 0%, rgba(232,241,249,0) 44%)",
-      "radial-gradient(circle at 72% 72%, rgba(0,42,82,0.5) 0%, rgba(0,42,82,0) 58%)",
-      "radial-gradient(circle at 50% 50%, #999999 0%, #1565a8 56%, #002a52 100%)",
-    ].join(", "),
-  },
-};
-
-export type OrbVariant = keyof typeof RECIPES;
-
-export function Orb({
-  variant = "sandstone",
-  className,
-  blur = true,
-}: {
-  variant?: OrbVariant;
-  className?: string;
-  /** Soft halo behind the sphere. Turn it off inside tight card frames. */
-  blur?: boolean;
-}) {
+function Blob({ className, fill }: { className?: string; fill: string }) {
   return (
-    <div
-      className={cx("pointer-events-none relative aspect-square", className)}
+    <svg
+      viewBox="0 0 200 200"
+      xmlns="http://www.w3.org/2000/svg"
+      className={cx("absolute", className)}
       aria-hidden="true"
     >
-      {blur ? (
-        <div
-          className="absolute inset-[-18%] rounded-full opacity-45 blur-3xl"
-          style={RECIPES[variant]}
-        />
-      ) : null}
-      <div className="absolute inset-0 rounded-full" style={RECIPES[variant]} />
-      {/* A faint inner highlight keeps the sphere from reading as a flat disc. */}
-      <div
-        className="absolute inset-0 rounded-full mix-blend-soft-light"
-        style={{
-          background:
-            "radial-gradient(circle at 38% 24%, rgba(255,255,255,0.55) 0%, rgba(255,255,255,0) 46%)",
-        }}
+      <path
+        d="M45.9,-58.1C58.7,-47.2,67.8,-31.8,70.4,-15.2C73,1.4,68.1,19.2,57.8,33.1C47.5,47,31.8,57,14.8,62.1C-2.2,67.2,-20.5,67.4,-36.1,59.8C-51.7,52.2,-64.6,36.8,-69.8,19.1C-75,-1.6,-72.5,-24.6,-61.8,-40.8C-51.1,-57,-32.2,-66.4,-13.8,-68.8C4.6,-71.2,33.1,-69,45.9,-58.1Z"
+        transform="translate(100 100)"
+        fill={fill}
       />
-    </div>
+    </svg>
   );
 }
 
 /**
- * The three-sphere row the design uses as an editorial accent. Sizes are
- * deliberately unequal — the arrangement should read as a composition, not a
- * grid of icons.
+ * Hero product mockup card floating above organic blob shapes.
+ * Shows a stylised scheme dashboard — product-forward, not illustrative.
  */
-export function OrbCluster({ className }: { className?: string }) {
+export function HeroVisual({ className }: { className?: string }) {
   return (
-    <div className={cx("flex items-end gap-6 sm:gap-8", className)} aria-hidden="true">
-      <Orb variant="sandstone" className="w-32 sm:w-44" />
-      <Orb variant="ember" className="w-20 sm:w-28" />
-      <Orb variant="dusk" className="w-12 sm:w-16" />
+    <div
+      className={cx("relative mx-auto aspect-[4/3] w-full max-w-lg", className)}
+      aria-hidden="true"
+    >
+      <Blob fill="#59e25d" className="top-[6%] left-[-8%] size-[55%] opacity-90" />
+      <Blob fill="#e261e5" className="top-[18%] right-[-6%] size-[48%] opacity-85" />
+      <Blob fill="#ffe228" className="bottom-[8%] left-[12%] size-[42%] opacity-90" />
+      <Blob fill="#130e30" className="right-[10%] bottom-[14%] size-[36%] opacity-80" />
+
+      <div className="absolute inset-[10%] flex flex-col gap-4 rounded-card bg-white p-6 shadow-none sm:p-8">
+        <div className="flex items-center justify-between gap-3">
+          <span className="label-caps text-deep-ink">Scheme dashboard</span>
+          <span className="rounded-full bg-brand px-3 py-1 text-caption font-medium text-white">
+            Live
+          </span>
+        </div>
+        <div className="grid flex-1 gap-3">
+          {[
+            { label: "PMEGP", value: "₹25L cap", pct: 85 },
+            { label: "CGTMSE", value: "Collateral-free", pct: 72 },
+            { label: "RIICO", value: "Land subsidy", pct: 58 },
+          ].map((row) => (
+            <div key={row.label} className="rounded-2xl bg-soft-meadow p-3">
+              <div className="flex items-center justify-between text-body-sm">
+                <span className="font-medium text-deep-ink">{row.label}</span>
+                <span className="text-slate">{row.value}</span>
+              </div>
+              <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-canvas">
+                <div
+                  className="h-full rounded-full bg-deep-ink"
+                  style={{ width: `${row.pct}%` }}
+                />
+              </div>
+            </div>
+          ))}
+        </div>
+        <p className="text-caption text-slate">
+          Eligibility mapped across central &amp; state schemes
+        </p>
+      </div>
     </div>
   );
+}
+
+/** @deprecated Use HeroVisual — kept for gradual migration. */
+export function OrbCluster({ className }: { className?: string }) {
+  return <HeroVisual className={className} />;
+}
+
+/** @deprecated Use HeroVisual — kept for about page single orb slot. */
+export function Orb({
+  className,
+}: {
+  variant?: string;
+  className?: string;
+  blur?: boolean;
+}) {
+  return <HeroVisual className={cx("max-w-xs", className)} />;
 }

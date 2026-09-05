@@ -16,13 +16,7 @@ const links: NavLink[] = [
 function setup(pathname = "/") {
   usePathname.mockReturnValue(pathname);
   return render(
-    <HeaderNav
-      logoSrc="/brand/logo.png"
-      logoAlt="Dakshyam Consultancy"
-      links={links}
-      phoneE164="+910000000000"
-      phoneDisplay="+91 00000 00000"
-    />,
+    <HeaderNav logoSrc="/brand/logo.png" logoAlt="Dakshyam Consultancy" links={links} />,
   );
 }
 
@@ -34,10 +28,9 @@ describe("HeaderNav", () => {
 
   it("renders the logo as a link home", () => {
     setup();
-    expect(screen.getAllByRole("link", { name: "Dakshyam Consultancy" })[0]).toHaveAttribute(
-      "href",
-      "/",
-    );
+    expect(
+      screen.getAllByRole("link", { name: "Dakshyam Consultancy" })[0],
+    ).toHaveAttribute("href", "/");
     expect(screen.getByRole("img", { name: "Dakshyam Consultancy" })).toHaveAttribute(
       "src",
       "/brand/logo.png",
@@ -53,12 +46,13 @@ describe("HeaderNav", () => {
     );
   });
 
-  it("tints the active pill with the accent wash", () => {
+  it("highlights the active nav link with brand text only", () => {
     setup("/schemes");
-    expect(within(desktopNav()).getByRole("link", { name: "Schemes" })).toHaveClass(
-      "bg-sandstone-wash",
-      "text-sandstone-deep",
-    );
+    const active = within(desktopNav()).getByRole("link", { name: "Schemes" });
+    const cta = screen.getByRole("link", { name: "Free consultation" });
+    expect(active).toHaveClass("text-brand", "font-semibold");
+    expect(active).not.toHaveClass("bg-brand");
+    expect(cta).toHaveClass("bg-brand", "text-white");
   });
 
   it("matches home exactly, so every route does not light it up", () => {
@@ -76,11 +70,11 @@ describe("HeaderNav", () => {
     );
   });
 
-  it("renders a tel: link for the phone number", () => {
+  it("renders a single consultation CTA on desktop", () => {
     setup();
-    expect(screen.getAllByRole("link", { name: /\+91 00000 00000/ })[0]).toHaveAttribute(
+    expect(screen.getByRole("link", { name: "Free consultation" })).toHaveAttribute(
       "href",
-      "tel:+910000000000",
+      "/contact",
     );
   });
 
@@ -118,8 +112,6 @@ describe("HeaderNav", () => {
         logoSrc="/brand/logo.png"
         logoAlt="Dakshyam Consultancy"
         links={links}
-        phoneE164="+917877223715"
-        phoneDisplay="+91 78772 23715"
       />,
     );
     expect(screen.getByRole("button", { name: "Open menu" })).toBeInTheDocument();

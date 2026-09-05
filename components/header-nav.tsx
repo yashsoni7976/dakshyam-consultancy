@@ -3,41 +3,27 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-import { Menu, Phone, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import type { NavLink } from "@/lib/content/types";
-import { ButtonLink, cx } from "./ui";
+import { ButtonLink, navLinkClasses } from "./ui";
 
 /**
- * Interactive shell of the site header.
- *
- * Split from `SiteHeader` so the content fetch stays on the server and only
- * the menu toggle and active-route highlighting ship to the browser.
- *
- * Visually the bar is close to invisible: no fill of its own beyond the page
- * canvas, one hairline underneath, and the outline/filled pill pair on the
- * right as the only weight.
+ * Site header — soft meadow bar, logo left, links centre, one CTA right.
+ * Active nav links highlight text in brand colour; buttons stay filled pills.
  */
 export function HeaderNav({
   logoSrc,
   logoAlt,
   links,
-  phoneE164,
-  phoneDisplay,
 }: {
   logoSrc: string;
   logoAlt: string;
   links: NavLink[];
-  phoneE164: string;
-  phoneDisplay: string;
 }) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [openedOn, setOpenedOn] = useState(pathname);
 
-  // Close the menu when the route changes, so a tap on a link (or a back
-  // navigation) doesn't leave it hanging open. Adjusted during render rather
-  // than in an effect — React re-renders before painting, so the menu never
-  // flashes in its open state on the new page.
   if (openedOn !== pathname) {
     setOpenedOn(pathname);
     setOpen(false);
@@ -47,7 +33,7 @@ export function HeaderNav({
     href === "/" ? pathname === "/" : pathname.startsWith(href);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-stone bg-eggshell/85 backdrop-blur-sm">
+    <header className="z-40 bg-soft-meadow">
       <div className="container-page flex h-16 items-center justify-between gap-6">
         <Link href="/" className="flex shrink-0 items-center">
           {/* eslint-disable-next-line @next/next/no-img-element -- logo is a raster asset of known aspect ratio */}
@@ -56,18 +42,16 @@ export function HeaderNav({
 
         <nav
           aria-label="Primary"
-          className="hidden flex-1 items-center justify-start gap-0.5 xl:flex"
+          className="hidden flex-1 items-center justify-center gap-1 xl:flex"
         >
           {links.map((link) => (
             <Link
               key={link.href}
               href={link.href}
               aria-current={isActive(link.href) ? "page" : undefined}
-              className={cx(
-                "whitespace-nowrap rounded-full px-3 py-2 text-body-sm transition-colors",
-                isActive(link.href)
-                  ? "bg-sandstone-wash font-medium text-sandstone-deep"
-                  : "text-smoke hover:bg-taupe hover:text-ink",
+              className={navLinkClasses(
+                isActive(link.href),
+                "px-3 py-2 text-body whitespace-nowrap",
               )}
             >
               {link.label}
@@ -76,19 +60,8 @@ export function HeaderNav({
         </nav>
 
         <div className="flex shrink-0 items-center gap-2">
-          {/* Responsive visibility lives on a wrapper, never on the button
-              itself: the kit's base class sets `inline-flex`, and Tailwind
-              emits `.inline-flex` after `.hidden`, so a `hidden` on the button
-              would silently lose the cascade. */}
-          <div className="hidden md:block">
-            <ButtonLink href={`tel:${phoneE164}`} variant="secondary">
-              <Phone className="size-3.5" aria-hidden="true" />
-              <span className="whitespace-nowrap">{phoneDisplay}</span>
-            </ButtonLink>
-          </div>
-
           <div className="hidden sm:block">
-            <ButtonLink href="/contact" className="whitespace-nowrap">
+            <ButtonLink href="/contact" size="sm" className="whitespace-nowrap">
               Free consultation
             </ButtonLink>
           </div>
@@ -99,7 +72,7 @@ export function HeaderNav({
             aria-expanded={open}
             aria-controls="mobile-nav"
             aria-label={open ? "Close menu" : "Open menu"}
-            className="rounded-full border border-hairline p-2 text-ink transition-colors hover:bg-taupe xl:hidden"
+            className="rounded-full p-2 text-deep-ink transition-colors hover:bg-canvas xl:hidden"
           >
             {open ? <X className="size-5" /> : <Menu className="size-5" />}
           </button>
@@ -110,35 +83,27 @@ export function HeaderNav({
         id="mobile-nav"
         aria-label="Primary"
         hidden={!open}
-        className="border-t border-stone bg-eggshell xl:hidden"
+        className="border-t border-border bg-soft-meadow xl:hidden"
       >
-        <ul className="container-page flex flex-col py-3">
+        <ul className="container-page flex flex-col gap-1 py-3">
           {links.map((link) => (
             <li key={link.href}>
               <Link
                 href={link.href}
                 aria-current={isActive(link.href) ? "page" : undefined}
-                className={cx(
-                  "block rounded-full px-4 py-3 text-body-sm",
-                  isActive(link.href)
-                    ? "bg-sandstone-wash font-medium text-sandstone-deep"
-                    : "text-smoke",
+                className={navLinkClasses(
+                  isActive(link.href),
+                  "block px-4 py-3 text-body-sm",
                 )}
               >
                 {link.label}
               </Link>
             </li>
           ))}
-          <li className="flex flex-col gap-2 px-1 pb-1 pt-3">
-            <ButtonLink href={`tel:${phoneE164}`} variant="secondary" className="w-full">
-              <Phone className="size-3.5" aria-hidden="true" />
-              <span>{phoneDisplay}</span>
+          <li className="pt-2 sm:hidden">
+            <ButtonLink href="/contact" size="sm">
+              Free consultation
             </ButtonLink>
-            <div className="sm:hidden">
-              <ButtonLink href="/contact" className="w-full">
-                Free consultation
-              </ButtonLink>
-            </div>
           </li>
         </ul>
       </nav>

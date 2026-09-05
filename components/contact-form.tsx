@@ -10,16 +10,21 @@ import { Button, cx } from "./ui";
 
 const INITIAL: ContactState = { status: "idle" };
 
-/** 4px radius on inputs is the one place the system drops the pill. */
+/** Pill inputs — white fill, onyx border, slate placeholder. */
 const FIELD =
-  "w-full rounded-input border bg-taupe px-3.5 py-2.5 text-body-sm text-ink outline-none transition-colors placeholder:text-ash focus:border-sandstone-deep";
+  "w-full rounded-full border border-onyx bg-white px-5 py-3 text-body text-deep-ink outline-none transition-colors placeholder:text-slate focus:border-deep-ink";
 
-const LABEL = "text-body-sm font-medium text-ink";
+const LABEL = "text-body-sm font-medium text-deep-ink";
 
 function SubmitButton() {
   const { pending } = useFormStatus();
   return (
-    <Button type="submit" size="lg" disabled={pending} className="self-start">
+    <Button
+      type="submit"
+      size="lg"
+      disabled={pending}
+      className="self-stretch sm:self-start"
+    >
       {pending ? "Sending…" : "Send message"}
     </Button>
   );
@@ -40,24 +45,24 @@ export function ContactForm({ consentText }: { consentText: string }) {
 
   if (state.status === "success") {
     return (
-      <div className="flex flex-col items-start gap-4 rounded-card bg-taupe p-6 sm:p-8">
-        <span className="inline-flex size-10 items-center justify-center rounded-full bg-ink text-eggshell">
+      <div className="flex flex-col items-start gap-4 rounded-card bg-soft-meadow p-6 sm:p-8">
+        <span className="inline-flex size-10 items-center justify-center rounded-full bg-deep-ink text-white">
           <Check className="size-5" aria-hidden="true" />
         </span>
-        <h2 className="display-type text-heading-xs text-ink">Message sent</h2>
-        <p className="text-body-sm text-smoke">{state.message}</p>
+        <h2 className="serif-type text-heading-sm text-deep-ink">Message sent</h2>
+        <p className="text-body-sm text-slate">{state.message}</p>
       </div>
     );
   }
 
-  const border = (field: string) => (errors[field] ? "border-alert" : "border-stone");
+  const border = (field: string) => (errors[field] ? "border-alert" : "border-onyx");
 
   return (
     <form action={action} noValidate className="flex flex-col gap-6">
       {state.status === "error" && state.message ? (
         <p
           role="alert"
-          className="rounded-input border-l-2 border-alert bg-taupe px-4 py-3 text-body-sm text-graphite"
+          className="rounded-card border-l-2 border-alert bg-soft-meadow px-4 py-3 text-body-sm text-deep-ink"
         >
           {state.message}
         </p>
@@ -150,12 +155,11 @@ export function ContactForm({ consentText }: { consentText: string }) {
           placeholder="What are you building, where, and roughly what will it cost to set up?"
           aria-invalid={Boolean(errors.message)}
           aria-describedby={errors.message ? "message-error" : undefined}
-          className={cx(FIELD, border("message"), "resize-y")}
+          className={cx(FIELD, border("message"), "resize-y rounded-card")}
         />
         <FieldError id="message-error" message={errors.message} />
       </div>
 
-      {/* Honeypot — hidden from people, tempting to bots. */}
       <div hidden aria-hidden="true">
         <label htmlFor="company">Company</label>
         <input id="company" name="company" tabIndex={-1} autoComplete="off" />
@@ -170,15 +174,21 @@ export function ContactForm({ consentText }: { consentText: string }) {
             required
             aria-invalid={Boolean(errors.consent)}
             aria-describedby={errors.consent ? "consent-error" : undefined}
-            className="mt-0.5 size-4 shrink-0 rounded-[3px] border-stone accent-ink"
+            className="mt-0.5 size-4 shrink-0 rounded border-onyx accent-deep-ink"
           />
-          <label htmlFor="consent" className="text-micro leading-relaxed text-smoke">
+          <label htmlFor="consent" className="text-body-sm leading-relaxed text-slate">
             {consentText}{" "}
-            <Link href="/privacy" className="text-sandstone-deep underline decoration-sandstone-line underline-offset-2">
+            <Link
+              href="/privacy"
+              className="text-deep-ink underline decoration-deep-ink/25 underline-offset-2"
+            >
               Privacy Policy
             </Link>{" "}
             ·{" "}
-            <Link href="/terms" className="text-sandstone-deep underline decoration-sandstone-line underline-offset-2">
+            <Link
+              href="/terms"
+              className="text-deep-ink underline decoration-deep-ink/25 underline-offset-2"
+            >
               Terms of Service
             </Link>
           </label>

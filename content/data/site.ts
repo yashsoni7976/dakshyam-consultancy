@@ -29,10 +29,7 @@ export const site: SiteIdentity = {
     {
       id: "head-office",
       label: "Head Office — Bikaner",
-      addressLines: [
-        "Middha Bhawan, Old Ginani",
-        "Opposite Gol Park, Bikaner City",
-      ],
+      addressLines: ["Middha Bhawan, Old Ginani", "Opposite Gol Park, Bikaner City"],
       city: "Bikaner",
       state: "Rajasthan",
       postalCode: "334001",
@@ -44,10 +41,7 @@ export const site: SiteIdentity = {
     {
       id: "branch-sri-dungargarh",
       label: "Branch Office — Sri Dungargarh",
-      addressLines: [
-        "Opposite Old Tank, Station Main Road",
-        "Bigga Bass",
-      ],
+      addressLines: ["Opposite Old Tank, Station Main Road", "Bigga Bass"],
       city: "Sri Dungargarh",
       state: "Rajasthan",
       postalCode: "331803",
@@ -75,8 +69,8 @@ export const navigation: Navigation = {
     { label: "About Us", href: "/about" },
     { label: "Schemes", href: "/schemes" },
     { label: "Services", href: "/services" },
-    { label: "Work Showcase", href: "/work-showcase" },
-    { label: "Blog", href: "/blog" },
+    // { label: "Work Showcase", href: "/work-showcase" },
+    // { label: "Blog", href: "/blog" },
     { label: "Contact Us", href: "/contact" },
   ],
   footer: [
@@ -89,7 +83,7 @@ export const navigation: Navigation = {
         { label: "Services", href: "/services" },
         { label: "Schemes", href: "/schemes" },
         { label: "Success Stories", href: "/success-stories" },
-        { label: "Blog", href: "/blog" },
+        // { label: "Blog", href: "/blog" },
       ],
     },
     {

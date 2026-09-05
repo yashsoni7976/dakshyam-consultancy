@@ -2,7 +2,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { Icon } from "@/components/icon";
-import { OrbCluster } from "@/components/orb";
+import { HeroVisual } from "@/components/orb";
 import {
   Badge,
   ButtonLink,
@@ -31,20 +31,21 @@ export default async function HomePage() {
 
   return (
     <>
-      {/* Hero — asymmetric: headline left, supporting copy and artwork right. */}
-      <div className="border-b border-stone">
-        <div className="container-page pb-16 pt-16 sm:pb-24 sm:pt-24">
-          <div className="grid gap-12 lg:grid-cols-[1.15fr_1fr] lg:items-start lg:gap-20">
-            <div className="flex flex-col gap-7">
+      {/* Hero — headline left, product mockup with blob backdrop right. */}
+      <div className="bg-canvas">
+        <div className="container-page pt-12 pb-16 sm:pt-16 sm:pb-24">
+          <div className="grid gap-12 lg:grid-cols-2 lg:items-center lg:gap-16">
+            <div className="flex flex-col gap-6">
               <Eyebrow>{home.hero.eyebrow}</Eyebrow>
-              <h1 className="display-type text-heading text-ink sm:text-display">
+              <h1 className="serif-type text-heading-lg text-deep-ink sm:text-display">
                 {home.hero.headingLines.map((line) => (
                   <span key={line} className="block">
                     {line}
                   </span>
                 ))}
               </h1>
-              <div className="flex flex-wrap gap-3">
+              <p className="max-w-lg text-body text-slate">{home.hero.body}</p>
+              <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
                 <ButtonLink href={home.hero.primaryCta.href}>
                   {home.hero.primaryCta.label}
                   <ArrowRight className="size-3.5" aria-hidden="true" />
@@ -55,20 +56,17 @@ export default async function HomePage() {
               </div>
             </div>
 
-            <div className="flex flex-col gap-12">
-              <p className="max-w-md text-body-lg text-smoke">{home.hero.body}</p>
-              <OrbCluster />
-            </div>
+            <HeroVisual />
           </div>
         </div>
 
-        {/* Proof strip — hairline-ruled rather than boxed. */}
-        <div className="border-t border-stone">
-          <dl className="container-page grid divide-y divide-stone sm:grid-cols-3 sm:divide-x sm:divide-y-0">
-            {home.hero.badges.map((badge, index) => (
-              <div key={badge.id} className={index === 0 ? "py-6 sm:pr-8" : "py-6 sm:px-8"}>
-                <dt className="label-mono">{badge.label}</dt>
-                <dd className="display-type mt-1 text-heading-xs text-ink tabular-nums">
+        {/* Proof strip — trust badges on soft meadow band. */}
+        <div className="bg-soft-meadow">
+          <dl className="container-page grid gap-6 py-10 sm:grid-cols-3 sm:gap-8">
+            {home.hero.badges.map((badge) => (
+              <div key={badge.id} className="flex flex-col gap-1">
+                <dt className="label-caps">{badge.label}</dt>
+                <dd className="serif-type text-heading-sm text-deep-ink tabular-nums">
                   {badge.value}
                 </dd>
               </div>
@@ -77,7 +75,6 @@ export default async function HomePage() {
         </div>
       </div>
 
-      {/* Impact statistics */}
       <Section>
         <SectionHeading
           eyebrow="Track record"
@@ -87,26 +84,26 @@ export default async function HomePage() {
         <StatRow stats={home.impact.stats} className="mt-12" />
       </Section>
 
-      {/* Sectors */}
-      <Section tone="taupe" divider>
+      <Section tone="meadow">
         <SectionHeading
           eyebrow="Sectors"
           title={home.sectors.heading}
           description={home.sectors.body}
         />
-        <ul className="mt-12 grid gap-px overflow-hidden rounded-card bg-stone sm:grid-cols-2 lg:grid-cols-4">
+        <ul className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {home.sectors.items.map((item) => (
-            <li key={item.id} className="flex flex-col gap-6 bg-taupe p-6 sm:p-8">
-              <IconPlate>
-                <Icon name={item.icon} />
-              </IconPlate>
-              <h3 className="text-subheading font-medium text-ink">{item.label}</h3>
+            <li key={item.id}>
+              <Card className="flex h-full flex-col gap-6">
+                <IconPlate>
+                  <Icon name={item.icon} />
+                </IconPlate>
+                <h3 className="serif-type text-heading-sm text-deep-ink">{item.label}</h3>
+              </Card>
             </li>
           ))}
         </ul>
       </Section>
 
-      {/* Featured schemes */}
       <Section>
         <div className="flex flex-wrap items-end justify-between gap-6">
           <SectionHeading
@@ -126,11 +123,13 @@ export default async function HomePage() {
                 <Badge tone={scheme.government === "central" ? "central" : "state"}>
                   {scheme.government === "central" ? "Central Govt" : "State Govt"}
                 </Badge>
-                <h3 className="display-type text-heading-xs text-ink">{scheme.code}</h3>
-                <p className="text-body-sm text-smoke">{scheme.keyAdvantage}</p>
+                <h3 className="serif-type text-heading-sm text-deep-ink">
+                  {scheme.code}
+                </h3>
+                <p className="text-body-sm text-slate">{scheme.keyAdvantage}</p>
                 <Link
                   href={`/schemes/${scheme.slug}`}
-                  className="mt-auto inline-flex w-fit items-center gap-1.5 pt-4 text-body-sm font-medium text-sandstone-deep underline decoration-sandstone-line underline-offset-4 transition-colors hover:decoration-sandstone-deep"
+                  className="mt-auto inline-flex w-fit items-center gap-1.5 pt-4 text-body-sm font-medium text-deep-ink underline decoration-deep-ink/25 underline-offset-4 transition-colors hover:decoration-deep-ink"
                 >
                   Scheme details
                   <ArrowUpRight className="size-3.5" aria-hidden="true" />
@@ -141,14 +140,15 @@ export default async function HomePage() {
         </ul>
       </Section>
 
-      {/* Project finance — the flagship feature panel. */}
-      <Section tone="taupe" divider>
-        <Card tone="outline" size="lg" className="grid gap-10 lg:grid-cols-[1fr_1.1fr]">
+      <Section tone="meadow">
+        <Card size="lg" tone="canvas" className="grid gap-10 lg:grid-cols-[1fr_1.1fr]">
           <div className="flex flex-col gap-5">
             <Eyebrow>Project finance</Eyebrow>
-            <h2 className="display-type text-heading-sm text-ink">{home.finance.heading}</h2>
-            <p className="text-body text-smoke">{home.finance.body}</p>
-            <ButtonLink href={home.finance.cta.href} className="mt-2 self-start">
+            <h2 className="serif-type text-heading-sm text-deep-ink">
+              {home.finance.heading}
+            </h2>
+            <p className="text-body text-slate">{home.finance.body}</p>
+            <ButtonLink href={home.finance.cta.href} className="mt-2 sm:self-start">
               {home.finance.cta.label}
             </ButtonLink>
           </div>
@@ -157,7 +157,7 @@ export default async function HomePage() {
             {home.finance.capabilities.map((capability) => (
               <li
                 key={capability}
-                className="border-b border-stone py-3 text-body-sm text-graphite"
+                className="border-b border-border py-3 text-body-sm text-deep-ink"
               >
                 {capability}
               </li>

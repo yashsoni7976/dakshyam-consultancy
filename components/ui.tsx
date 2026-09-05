@@ -13,10 +13,9 @@ export function cx(...values: Array<string | false | null | undefined>) {
 /**
  * One vertical band of the page.
  *
- * `canvas` sits on the eggshell page ground; `taupe` steps one surface level
- * up. Bands alternate down the page, and consecutive canvas bands are told
- * apart by a hairline rather than a shadow — borders over elevation is the
- * flat editorial rule the system runs on.
+ * `canvas` sits on the warm cream ground; `meadow` steps one surface level
+ * up to soft meadow green-tint. Bands alternate down the page — surface
+ * contrast alone, no shadows.
  */
 export function Section({
   children,
@@ -25,15 +24,15 @@ export function Section({
   divider = false,
   ...rest
 }: ComponentProps<"section"> & {
-  tone?: "canvas" | "taupe";
+  tone?: "canvas" | "meadow";
   divider?: boolean;
 }) {
   return (
     <section
       className={cx(
         "section-y",
-        tone === "taupe" && "bg-taupe",
-        divider && "border-t border-stone",
+        tone === "meadow" && "bg-soft-meadow",
+        divider && "border-t border-border",
         className,
       )}
       {...rest}
@@ -43,20 +42,13 @@ export function Section({
   );
 }
 
-/** 1px stone rule. The most common separator in the system. */
 export function Divider({ className }: { className?: string }) {
-  return <hr className={cx("border-0 border-t border-stone", className)} />;
+  return <hr className={cx("border-0 border-t border-border", className)} />;
 }
 
-/**
- * Technical section label in mono, in the brand navy accent.
- *
- * Only *section* eyebrows are accented. The bare `label-mono` utility stays
- * neutral for metadata labels — the proof strip, footer column headings,
- * table heads — so they don't eat into the colour budget.
- */
+/** Small caps section label above headlines. */
 export function Eyebrow({ children }: { children: ReactNode }) {
-  return <p className="label-mono text-sandstone-deep">{children}</p>;
+  return <p className="label-caps text-deep-ink">{children}</p>;
 }
 
 export function SectionHeading({
@@ -81,20 +73,17 @@ export function SectionHeading({
       )}
     >
       {eyebrow ? <Eyebrow>{eyebrow}</Eyebrow> : null}
-      <h2 className="display-type max-w-3xl text-heading-sm text-ink sm:text-heading">
+      <h2 className="max-w-3xl serif-type text-heading-sm text-deep-ink sm:text-heading">
         {title}
       </h2>
-      {description ? <p className="max-w-2xl text-body text-smoke">{description}</p> : null}
+      {description ? (
+        <p className="max-w-2xl text-body text-slate">{description}</p>
+      ) : null}
     </div>
   );
 }
 
-/**
- * The banner every inner page opens with.
- *
- * Asymmetric like the homepage hero: the headline holds the left column, the
- * supporting copy sits to its right on wide screens.
- */
+/** Banner every inner page opens with — asymmetric two-column hero. */
 export function PageHero({
   eyebrow,
   title,
@@ -109,16 +98,18 @@ export function PageHero({
   aside?: ReactNode;
 }) {
   return (
-    <div className="border-b border-stone bg-eggshell">
-      <div className="container-page pb-16 pt-14 sm:pb-20 sm:pt-20">
+    <div className="bg-soft-meadow">
+      <div className="container-page pt-14 pb-16 sm:pt-20 sm:pb-20">
         <div className="grid gap-8 lg:grid-cols-[1.1fr_1fr] lg:items-end lg:gap-16">
           <div className="flex flex-col gap-5">
             {eyebrow ? <Eyebrow>{eyebrow}</Eyebrow> : null}
-            <h1 className="display-type text-heading text-ink sm:text-display">{title}</h1>
+            <h1 className="serif-type text-heading-lg text-deep-ink sm:text-display">
+              {title}
+            </h1>
           </div>
           <div className="flex flex-col gap-6">
             {description ? (
-              <p className="max-w-xl text-body-lg text-smoke">{description}</p>
+              <p className="max-w-xl text-subheading text-slate">{description}</p>
             ) : null}
             {children}
             {aside}
@@ -133,36 +124,50 @@ export function PageHero({
 /* Controls                                                                   */
 /* -------------------------------------------------------------------------- */
 
-/**
- * NOTE: this sets `inline-flex`, and Tailwind emits `.inline-flex` after
- * `.hidden` in the stylesheet. Passing `hidden` through `className` therefore
- * does nothing — put responsive visibility on a wrapper element instead.
- */
 const BUTTON_BASE =
-  "inline-flex items-center justify-center gap-2 rounded-full border text-body-sm font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-50";
+  "inline-flex w-full items-center justify-center gap-2 rounded-full border-0 text-body font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto";
 
 const BUTTON_SIZES = {
-  sm: "px-3.5 py-2",
-  md: "px-4 py-2.5",
-  lg: "px-5 py-3",
+  sm: "px-5 py-2 text-body-sm",
+  md: "px-6 py-3",
+  lg: "px-6 py-3.5",
 } as const;
 
-/**
- * Two-step hierarchy, and only two: a black fill and an eggshell outline.
- * Coloured CTA fills are not part of the system.
- */
+/** Logo-blue primary + deep-ink secondary — the only button hierarchy. */
 const BUTTON_VARIANTS = {
-  primary: "border-hairline bg-ink text-eggshell hover:bg-graphite",
-  secondary: "border-hairline bg-eggshell text-ink hover:bg-taupe",
-  ghost: "border-transparent bg-transparent text-ink hover:border-hairline hover:bg-taupe",
-  /** For use on the ink panel, where the fill/outline pair inverts. */
-  inverse: "border-transparent bg-eggshell text-ink hover:bg-stone",
+  primary: "bg-brand text-white hover:bg-brand/90",
+  secondary: "bg-deep-ink text-white hover:bg-deep-ink/90",
+  ghost: "bg-transparent text-deep-ink hover:bg-soft-meadow",
+  /** For use on deep-ink panels. */
+  inverse: "bg-brand text-white hover:bg-brand/90",
   inverseOutline:
-    "border-white/25 bg-transparent text-eggshell hover:border-white/50 hover:bg-white/10",
+    "border border-white/30 bg-transparent text-white hover:border-white/50 hover:bg-white/10",
 } as const;
 
 export type ButtonVariant = keyof typeof BUTTON_VARIANTS;
 export type ButtonSize = keyof typeof BUTTON_SIZES;
+
+/** Shared pill classes — nav active state and buttons use the same tokens. */
+export function pillClasses({
+  variant = "primary",
+  size = "md",
+  className,
+}: {
+  variant?: ButtonVariant;
+  size?: ButtonSize;
+  className?: string;
+}) {
+  return cx(BUTTON_BASE, BUTTON_SIZES[size], BUTTON_VARIANTS[variant], className);
+}
+
+/** Nav link — active state highlights text only, no fill pill. */
+export function navLinkClasses(active: boolean, className?: string) {
+  return cx(
+    "font-medium transition-colors",
+    active ? "font-semibold text-brand" : "text-deep-ink hover:text-brand",
+    className,
+  );
+}
 
 export function ButtonLink({
   href,
@@ -179,7 +184,7 @@ export function ButtonLink({
   className?: string;
   children: ReactNode;
 }) {
-  const classes = cx(BUTTON_BASE, BUTTON_SIZES[size], BUTTON_VARIANTS[variant], className);
+  const classes = pillClasses({ variant, size, className });
 
   if (external) {
     return (
@@ -201,15 +206,9 @@ export function Button({
   className,
   ...rest
 }: ComponentProps<"button"> & { variant?: ButtonVariant; size?: ButtonSize }) {
-  return (
-    <button
-      className={cx(BUTTON_BASE, BUTTON_SIZES[size], BUTTON_VARIANTS[variant], className)}
-      {...rest}
-    />
-  );
+  return <button className={cx(pillClasses({ variant, size, className }))} {...rest} />;
 }
 
-/** Underlined in-text action, for when a pill would be too loud. */
 export function TextLink({
   href,
   children,
@@ -222,7 +221,7 @@ export function TextLink({
   external?: boolean;
 }) {
   const classes = cx(
-    "inline-flex items-center gap-1.5 text-body-sm font-medium text-sandstone-deep underline decoration-sandstone-line underline-offset-4 transition-colors hover:decoration-sandstone-deep",
+    "inline-flex items-center gap-1.5 text-body-sm font-medium text-deep-ink underline decoration-deep-ink/25 underline-offset-4 transition-colors hover:decoration-deep-ink",
     className,
   );
   if (external) {
@@ -244,17 +243,14 @@ export function TextLink({
 /* -------------------------------------------------------------------------- */
 
 const CARD_TONES = {
-  /** The dominant pattern: flat taupe, no border, no shadow. */
-  taupe: "bg-taupe",
-  /** Elevated only when it genuinely needs to sit above its neighbours. */
-  raised: "bg-eggshell shadow-whisper",
-  /** On a taupe band, an eggshell card with a hairline reads as the step up. */
-  outline: "bg-eggshell border border-stone",
+  meadow: "bg-soft-meadow",
+  canvas: "bg-canvas",
+  white: "bg-white",
 } as const;
 
 export function Card({
   className,
-  tone = "taupe",
+  tone = "meadow",
   size = "md",
   children,
   ...rest
@@ -267,9 +263,9 @@ export function Card({
       className={cx(
         "rounded-card",
         CARD_TONES[tone],
-        size === "sm" && "p-5",
+        size === "sm" && "p-6",
         size === "md" && "p-6 sm:p-8",
-        size === "lg" && "rounded-card-lg p-8 sm:p-10",
+        size === "lg" && "p-8 sm:p-12",
         className,
       )}
       {...rest}
@@ -279,21 +275,25 @@ export function Card({
   );
 }
 
-/** Tinted plate behind a monochrome icon — the accent's largest permitted area. */
 export function IconPlate({ children }: { children: ReactNode }) {
   return (
-    <span className="inline-flex size-10 shrink-0 items-center justify-center rounded-plate bg-sandstone-wash text-sandstone-deep">
+    <span className="inline-flex size-10 shrink-0 items-center justify-center rounded-full bg-canvas text-deep-ink">
       {children}
     </span>
   );
 }
 
-/** Neutral pill for sector names, tags and other free-form labels. */
-export function Tag({ children, className }: { children: ReactNode; className?: string }) {
+export function Tag({
+  children,
+  className,
+}: {
+  children: ReactNode;
+  className?: string;
+}) {
   return (
     <span
       className={cx(
-        "inline-flex items-center rounded-full border border-stone bg-eggshell px-3 py-1 text-micro text-smoke",
+        "inline-flex items-center rounded-full bg-canvas px-3 py-1 text-caption font-medium tracking-tight text-slate uppercase",
         className,
       )}
     >
@@ -302,10 +302,7 @@ export function Tag({ children, className }: { children: ReactNode; className?: 
   );
 }
 
-/**
- * Classification pill. The leading dot marks the category — kept achromatic,
- * because the sparks are reserved for artwork.
- */
+/** Classification pill — achromatic only, no decorative colours in UI. */
 export function Badge({
   children,
   tone = "neutral",
@@ -314,13 +311,13 @@ export function Badge({
   tone?: "neutral" | "central" | "state";
 }) {
   const dots = {
-    neutral: "bg-ash",
-    central: "bg-sandstone-deep",
-    state: "bg-eggshell ring-1 ring-sandstone",
+    neutral: "bg-slate",
+    central: "bg-deep-ink",
+    state: "bg-canvas ring-1 ring-deep-ink/30",
   } as const;
 
   return (
-    <span className="inline-flex w-fit items-center gap-2 rounded-full border border-stone bg-eggshell py-1 pl-2.5 pr-3 text-micro font-medium text-graphite">
+    <span className="inline-flex w-fit items-center gap-2 rounded-full bg-canvas py-1 pr-3 pl-2.5 text-caption font-medium tracking-tight text-deep-ink uppercase">
       <span className={cx("size-1.5 rounded-full", dots[tone])} aria-hidden="true" />
       {children}
     </span>
@@ -331,12 +328,6 @@ export function Badge({
 /* Figures                                                                    */
 /* -------------------------------------------------------------------------- */
 
-/**
- * A row of numbers ruled by hairlines rather than boxed into cards — the
- * editorial treatment the system prefers for data. Ruling each cell rather
- * than gapping a filled grid keeps it count-agnostic: a partial last row
- * cannot leave a filled hole.
- */
 export function StatRow({
   stats,
   className,
@@ -345,30 +336,22 @@ export function StatRow({
   className?: string;
 }) {
   return (
-    <dl className={cx("grid gap-x-10 sm:grid-cols-2 lg:grid-cols-3", className)}>
+    <dl className={cx("grid gap-6 sm:grid-cols-2 lg:grid-cols-3", className)}>
       {stats.map((stat) => (
-        <div key={stat.id} className="flex flex-col gap-2 border-t border-stone py-7">
-          <dd className="display-type text-heading-sm text-ink tabular-nums">
+        <Card key={stat.id} size="sm" className="flex flex-col gap-2">
+          <dd className="serif-type text-heading-sm text-deep-ink tabular-nums">
             {stat.value}
           </dd>
-          <dt className="text-body-sm font-medium text-ink">{stat.label}</dt>
+          <dt className="text-body-sm font-medium text-deep-ink">{stat.label}</dt>
           {stat.description ? (
-            <p className="text-body-sm text-smoke">{stat.description}</p>
+            <p className="text-body-sm text-slate">{stat.description}</p>
           ) : null}
-        </div>
+        </Card>
       ))}
     </dl>
   );
 }
 
-/* -------------------------------------------------------------------------- */
-/* Empty state                                                                */
-/* -------------------------------------------------------------------------- */
-
-/**
- * Shown wherever a collection is legitimately empty — blog, success stories,
- * showcase records. Says what will appear here rather than looking broken.
- */
 export function EmptyState({
   title,
   description,
@@ -379,9 +362,9 @@ export function EmptyState({
   action?: { label: string; href: string };
 }) {
   return (
-    <div className="flex flex-col items-center gap-4 rounded-card bg-taupe px-6 py-20 text-center">
-      <h3 className="display-type text-heading-xs text-ink">{title}</h3>
-      <p className="max-w-md text-body-sm text-smoke">{description}</p>
+    <div className="flex flex-col items-center gap-4 rounded-card bg-soft-meadow px-6 py-20 text-center">
+      <h3 className="serif-type text-heading-sm text-deep-ink">{title}</h3>
+      <p className="max-w-md text-body-sm text-slate">{description}</p>
       {action ? (
         <ButtonLink href={action.href} variant="secondary" className="mt-2">
           {action.label}
@@ -391,14 +374,7 @@ export function EmptyState({
   );
 }
 
-/* -------------------------------------------------------------------------- */
-/* Closing call to action, shared by most pages                               */
-/* -------------------------------------------------------------------------- */
-
-/**
- * The one ink-filled surface on the page. Black is the system's only hard
- * contrast, so it is spent here — once, at the bottom — and nowhere else.
- */
+/** Closing call to action — deep ink panel with logo-blue primary. */
 export function CtaBanner({
   title,
   description,
@@ -412,22 +388,21 @@ export function CtaBanner({
 }) {
   return (
     <Section>
-      <div className="relative overflow-hidden rounded-card-lg bg-ink-warm px-6 py-14 sm:px-12 sm:py-20">
-        {/* Decorative spark — the sole splash of colour, kept behind the type. */}
+      <div className="relative overflow-hidden rounded-card bg-deep-ink px-6 py-14 sm:px-12 sm:py-20">
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute -right-24 -top-24 size-72 rounded-full opacity-60 blur-3xl sm:size-96"
-          style={{
-            background:
-              "radial-gradient(circle at 40% 40%, #178dcd 0%, #004382 45%, #002a52 80%, transparent 92%)",
-          }}
+          className="pointer-events-none absolute -top-16 -right-16 size-64 rounded-full bg-moss-green/30 blur-3xl sm:size-80"
+        />
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute -bottom-20 -left-10 size-56 rounded-full bg-fuchsia/25 blur-3xl"
         />
         <div className="relative flex max-w-2xl flex-col items-start gap-5">
-          <h2 className="display-type text-heading-sm text-eggshell sm:text-heading">
+          <h2 className="serif-type text-heading-sm text-white sm:text-heading">
             {title}
           </h2>
-          <p className="text-body text-stone">{description}</p>
-          <div className="flex flex-wrap gap-3 pt-2">
+          <p className="text-body text-white/75">{description}</p>
+          <div className="flex flex-col gap-3 pt-2 sm:flex-row sm:flex-wrap">
             <ButtonLink href={primary.href} variant="inverse">
               {primary.label}
             </ButtonLink>
